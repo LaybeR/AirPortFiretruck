@@ -2,8 +2,8 @@ package Driving;
 import Enums.LeftRightPosition;
 
 public class BrakeDisc {
-    LeftRightPosition p;
+    LeftRightPosition side;
     BrakeDisc(LeftRightPosition pos){
-        this.p = pos;
+        this.side = pos;
     }
 }
