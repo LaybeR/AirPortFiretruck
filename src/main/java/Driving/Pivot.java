@@ -4,9 +4,9 @@ import static Enums.LeftRightPosition.LEFT;
 import static Enums.LeftRightPosition.RIGHT;
 
 public abstract class Pivot {
-    private BrakeDisc[] brakeDiscs;
-    private Tire leftTire;
-    private Tire rightTire;
+    BrakeDisc[] brakeDiscs;
+    Tire leftTire;
+    Tire rightTire;
     Pivot (){
         create();
     }
