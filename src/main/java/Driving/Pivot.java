@@ -19,7 +19,7 @@ public abstract class Pivot {
         brakeDiscs[3] = new BrakeDisc(RIGHT);
         brakeDiscs[4] = new BrakeDisc(LEFT);
         brakeDiscs[5] = new BrakeDisc(RIGHT);
-        leftTire = new Tire();
-        rightTire = new Tire();
+        leftTire = new Tire(LEFT);
+        rightTire = new Tire(RIGHT);
     }
 }
