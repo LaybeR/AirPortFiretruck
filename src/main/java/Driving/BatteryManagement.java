@@ -1,11 +1,15 @@
 package Driving;
 
+import AirportFireTruck.ICentralUnit;
+
 public enum BatteryManagement {
     INSTANCE;
+    private final ICentralUnit CU;
 
     BatteryBox batteryBox;
 
-    BatteryManagement(){
+    BatteryManagement(ICentralUnit Cu){
+        this.CU = Cu;
         create();
     }
 
@@ -13,7 +17,7 @@ public enum BatteryManagement {
     batteryBox = new BatteryBox();
     }
 
-    int getCurrentCharge(){
+    public int getCurrentCharge(){
     return batteryBox.getCurrentCharge();
     }
 }
