@@ -3,11 +3,10 @@ package User;
 import Cabin.Seat;
 
 public abstract class User {
-    User user;
-    User sitDown(Seat seat){
-        return user;
+    public User sitDown(Seat seat){
+        return this;
     }
-    User leaveSeat(){
-        return user;
+    public User leaveSeat(){
+        return this;
     }
 }

@@ -5,10 +5,10 @@ import Enums.DoorStatus;
 import Enums.LeftRightPosition;
 
 public class Door {
-    LeftRightPosition side;
+    private final LeftRightPosition side;
     DoorStatus status;
-    DoorButton DBIN;
-    DoorButton DBOUT;
+    public final DoorButton DBIN;
+    public final DoorButton DBOUT;
 
     void changeDoorStatus(){
     if (status == DoorStatus.IN) status = DoorStatus.OUT;
@@ -16,10 +16,8 @@ public class Door {
     }
     Door(LeftRightPosition sde){
         this.side = sde;
-        create();
+        DBIN = new DoorButton(DoorSide.IN,this);
+        DBOUT = new DoorButton(DoorSide.OUT,this);
     }
-    void create(){
-        DBIN = new DoorButton(DoorSide.IN);
-        DBOUT = new DoorButton(DoorSide.OUT);
-    }
+
 }
