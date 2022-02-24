@@ -3,13 +3,15 @@ package Cabin;
 import Enums.LeftRightPosition;
 
 public class JoystickButton {
-    LeftRightPosition side;
-    void press(){
-
+    private final LeftRightPosition side;
+    private final Joystick stick;
+    public void press(){
+        stick.pressJoystickButton(side);
     }
 
-    JoystickButton(LeftRightPosition sde){
+    JoystickButton(LeftRightPosition sde, Joystick stick){
         this.side = sde;
+        this.stick = stick;
     }
 
 }

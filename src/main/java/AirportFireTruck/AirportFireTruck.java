@@ -12,14 +12,15 @@ import User.Driver;
 import User.Operator;
 import User.Person;
 import User.Passenger;
+import Cabin.Joystick;
 
 public class AirportFireTruck {
     private final ICentralUnit centralUnit;
     private final Cabin cabin;
 
     private AirportFireTruck(int count) {
-        this.cabin = new Cabin();
         this.centralUnit = new CentralUnit();
+        this.cabin = new Cabin(centralUnit);
     }
 
     public static class Builder {
@@ -32,6 +33,45 @@ public class AirportFireTruck {
 
         public AirportFireTruck build() {
             return new AirportFireTruck(headlights);
+        }
+    }
+
+    public Joystick getJoystick(LeftRightPosition side) {
+        Joystick result = null;
+        switch (side) {
+            case LEFT -> result = cabin.LJ;
+            case RIGHT -> result = cabin.RJ;
+        }
+        return result;
+    }
+
+    public void holdFeeler(User user, Joystick joystick) {
+        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
+            joystick.feeler.hold();
+        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
+            joystick.feeler.hold();
+        }
+    }
+
+    public void releaseFeeler(User user, Joystick joystick) {
+        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
+            joystick.feeler.release();
+        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
+            joystick.feeler.release();
+        }
+    }
+
+    public void pressJoystickButton(User user, Joystick joystick, LeftRightPosition side) {
+        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
+            switch (side) {
+                case LEFT -> joystick.LB.press();
+                case RIGHT -> joystick.RB.press();
+            }
+        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
+            switch (side) {
+                case LEFT -> joystick.LB.press();
+                case RIGHT -> joystick.RB.press();
+            }
         }
     }
 
