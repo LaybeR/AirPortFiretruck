@@ -8,6 +8,7 @@ public class Switch {
 
     public void press() {
         isOn = !isOn;
+        System.out.println("Schalter ist nun" + (isOn ? " an." : " aus."));
     }
 
     public boolean isPressed() {return isOn;}
