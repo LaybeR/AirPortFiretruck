@@ -13,4 +13,7 @@ public class FloorCannon {
     public FloorCannon(){
         activated = false;
     }
+     public boolean isActivated(){
+        return activated;
+     }
 }

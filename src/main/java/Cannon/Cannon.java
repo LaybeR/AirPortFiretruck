@@ -32,4 +32,8 @@ public abstract class Cannon {
     public double getRatio(){
     return powderToWaterInPercent/100.;
     }
+
+    public boolean isActivated() {
+        return activated;
+    }
 }
