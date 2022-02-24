@@ -29,7 +29,9 @@ public class Chassis {
     }
 
     public void iterate() {
-
+        for (ElectricEngine e : engines) {
+            e.iterate();
+        }
     }
 
     public Chassis(){

@@ -14,7 +14,11 @@ public enum BatteryManagement {
     }
 
     void create(){
-    batteryBox = new BatteryBox();
+        batteryBox = new BatteryBox();
+    }
+
+    public int takeOutEnergy(int amount) {
+        return batteryBox.takeOut(amount);
     }
 
     public int getCurrentCharge(){

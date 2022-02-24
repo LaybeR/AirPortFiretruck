@@ -15,6 +15,6 @@ public class ElectricEngine {
     }
 
     void iterate(){
-
+        BatteryManagement.INSTANCE.takeOutEnergy((int) (speed*12.5));
     }
 }

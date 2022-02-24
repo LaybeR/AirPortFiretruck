@@ -24,18 +24,20 @@ public class BatteryBox {
             left = batteryBox[1][1].charge(amount);
         }
     }
-    void takeOut(int amount){
-        int left = batteryBox[0][0].takeOut(amount);
-        if (left > 0){
-            left = batteryBox[1][0].takeOut(amount);
+    int takeOut(int amount){
+        int result = batteryBox[0][0].takeOut(amount);
+        if (result < amount){
+            result += batteryBox[1][0].takeOut(amount-result);
         }
-        if (left > 0){
-            left = batteryBox[0][1].takeOut(amount);
+        if (result < amount){
+            result += batteryBox[1][0].takeOut(amount-result);
         }
-        if (left > 0){
-            left = batteryBox[1][1].takeOut(amount);
+        if (result < amount){
+            result += batteryBox[1][0].takeOut(amount-result);
         }
+        return result;
     }
+
     int getCurrentCharge(){
         if (batteryBox[0][0].pointer < 100000) return batteryBox[0][0].pointer;
         if (batteryBox[1][0].pointer < 100000) return batteryBox[1][0].pointer;
