@@ -19,9 +19,6 @@ public class Application {
         airportFireTruck.pressGas(user);
         airportFireTruck.pressGas(user);
         airportFireTruck.iterate();
-        airportFireTruck.turnSteeringWheel(user, SteeringDirection.LEFT);
-        airportFireTruck.turnSteeringWheel(user, SteeringDirection.RIGHT);
-        airportFireTruck.turnSteeringWheel(user, SteeringDirection.CENTER);
         airportFireTruck.postDisplay();
     }
 }

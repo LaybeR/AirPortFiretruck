@@ -3,14 +3,14 @@ package Lights;
 import Enums.FrontRearSide;
 import Enums.LeftRightSide;
 import Enums.LightColour;
-import Enums.Postion;
+import Enums.LateralPosition;
 
 public class BrakeLight  extends Light {
 
-    public BrakeLight(FrontRearSide frontRearSide, LeftRightSide leftRightSide) {
+    public BrakeLight(LeftRightSide leftRightSide) {
         colour = LightColour.RED;
-        postion = Postion.BOTTOM;
+        postion = LateralPosition.BOTTOM;
+        frontRearSide = FrontRearSide.REAR;
         this.leftRightSide = leftRightSide;
-        this.frontRearSide = frontRearSide;
     }
 }

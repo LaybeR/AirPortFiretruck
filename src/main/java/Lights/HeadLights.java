@@ -3,14 +3,14 @@ package Lights;
 import Enums.FrontRearSide;
 import Enums.LeftRightSide;
 import Enums.LightColour;
-import Enums.Postion;
+import Enums.LateralPosition;
 
 public class HeadLights extends Light {
 
-    public HeadLights(FrontRearSide frontRearSide, LeftRightSide leftRightSide) {
+    public HeadLights(LeftRightSide leftRightSide) {
         colour = LightColour.WHITE;
-        postion = Postion.BOTTOM;
+        postion = LateralPosition.BOTTOM;
+        frontRearSide = FrontRearSide.FRONT;
         this.leftRightSide = leftRightSide;
-        this.frontRearSide = frontRearSide;
     }
 }

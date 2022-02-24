@@ -1,6 +1,7 @@
 package Controller;
 
 import AirportFireTruck.ICentralUnit;
+import Enums.SteeringDirection;
 
 public class SteeringWheel {
     private int position;
@@ -12,20 +13,16 @@ public class SteeringWheel {
 
     public void turnLeft() {
         position = -5;
-        sendUpdate();
+        centralUnit.changeVehicleDirection(position, SteeringDirection.LEFT);
     }
 
     public void turnRight() {
         position = 5;
-        sendUpdate();
+        centralUnit.changeVehicleDirection(position, SteeringDirection.RIGHT);
     }
 
     public void returnToCenter() {
         position = 0;
-        sendUpdate();
-    }
-
-    private void sendUpdate() {
-        centralUnit.changeVehicleDirection(position);
+        centralUnit.changeVehicleDirection(position, SteeringDirection.CENTER);
     }
 }

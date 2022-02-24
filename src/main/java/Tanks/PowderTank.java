@@ -13,6 +13,10 @@ public class PowderTank extends Tank {
         Arrays.fill(capacity,capacity[0]);
     }
 
+    public int getMaxAmount() {
+        return (75*45*10);
+    }
+
     @Override
     public void fillIn(int amount) {
         while (amount > 0 && pointer < (75*45*10)-1) {

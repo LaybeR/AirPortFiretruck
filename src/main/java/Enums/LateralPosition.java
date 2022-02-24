@@ -1,6 +1,6 @@
 package Enums;
 
-public enum Postion {
+public enum LateralPosition {
     TOP,
     BOTTOM
 }

@@ -6,9 +6,9 @@ public class EmergencyLight extends FlashingLight {
     LightSize size;
     LED[] led;
 
-    public EmergencyLight(FrontRearSide frontRearSide, LeftRightSide leftRightSide, LightSize size) {
+    public EmergencyLight(LateralPosition pos, FrontRearSide frontRearSide, LeftRightSide leftRightSide, LightSize size) {
         colour = LightColour.BLUE;
-        postion = Postion.TOP;
+        postion = pos;
         this.leftRightSide = leftRightSide;
         this.frontRearSide = frontRearSide;
         this.size = size;

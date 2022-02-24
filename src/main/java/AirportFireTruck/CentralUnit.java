@@ -5,14 +5,11 @@ import Cannon.FloorCannon;
 import Cannon.FrontCannon;
 import Cannon.Mixer;
 import Cannon.RoofCannon;
-import Controller.BrakePedal;
-import Controller.GasPedal;
-import Controller.Knob;
-import Controller.SteeringWheel;
+import Controller.*;
 import Driving.BatteryManagement;
 import Driving.Chassis;
-import Enums.KnobType;
-import Enums.SwitchType;
+import Enums.*;
+import Lights.*;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 
@@ -30,8 +27,50 @@ public class CentralUnit implements ICentralUnit {
     private final WaterTank waterTank;
     private final PowderTank powderTank;
     private final ControlPanel controlPanel;
+    private final HeadLights[] headLights;
+    private final DirectionIndicator[] turnLeft;
+    private final DirectionIndicator[] turnRight;
+    private final BrakeLight[] brakeLights;
+    private final RoofLight[] roofLights;
+    private final WarningLight[] warningLights;
+    private final EmergencyLight[] emergencyLights;
 
-    public CentralUnit(ControlPanel controlPanel) {
+    public CentralUnit(ControlPanel controlPanel, int count) {
+        this.headLights = new HeadLights[count*2];
+        for (int i = 0; i < headLights.length; i += 2){
+            headLights[i] = new HeadLights(LeftRightSide.LEFT);
+            headLights[i+1] = new HeadLights(LeftRightSide.RIGHT);
+        }
+
+        roofLights = new RoofLight[4];
+        for (int i = 0; i < roofLights.length; i += 2){
+            roofLights[i] = new RoofLight(LeftRightSide.LEFT);
+            roofLights[i+1] = new RoofLight(LeftRightSide.RIGHT);
+        }
+
+        turnLeft = new DirectionIndicator[2];
+        turnLeft[0] = new DirectionIndicator(FrontRearSide.FRONT,LeftRightSide.LEFT);
+        turnLeft[1] = new DirectionIndicator(FrontRearSide.REAR,LeftRightSide.LEFT);
+        turnRight = new DirectionIndicator[2];
+        turnRight[0] = new DirectionIndicator(FrontRearSide.FRONT,LeftRightSide.RIGHT);
+        turnRight[1] = new DirectionIndicator(FrontRearSide.REAR,LeftRightSide.RIGHT);
+
+        brakeLights = new BrakeLight[2];
+        brakeLights[0] = new BrakeLight(LeftRightSide.LEFT);
+        brakeLights[1] = new BrakeLight(LeftRightSide.RIGHT);
+
+        warningLights = new WarningLight[2];
+        warningLights[0] = new WarningLight(FrontRearSide.FRONT,LeftRightSide.LEFT);
+        warningLights[1] = new WarningLight(FrontRearSide.REAR,LeftRightSide.RIGHT);
+
+        emergencyLights = new EmergencyLight[6];
+        emergencyLights[0] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.FRONT,LeftRightSide.LEFT,LightSize.SMALL);
+        emergencyLights[1] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.FRONT,LeftRightSide.RIGHT,LightSize.SMALL);
+        emergencyLights[2] = new EmergencyLight(LateralPosition.TOP,FrontRearSide.FRONT,LeftRightSide.LEFT,LightSize.LARGE);
+        emergencyLights[3] = new EmergencyLight(LateralPosition.TOP,FrontRearSide.FRONT,LeftRightSide.RIGHT,LightSize.LARGE);
+        emergencyLights[4] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.REAR,LeftRightSide.LEFT,LightSize.MEDIUM);
+        emergencyLights[5] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.REAR,LeftRightSide.RIGHT,LightSize.MEDIUM);
+
         this.controlPanel = controlPanel;
         this.gasPedal = new GasPedal(this);
         this.brakePedal = new BrakePedal(this);
@@ -48,8 +87,18 @@ public class CentralUnit implements ICentralUnit {
         this.powderTank = new PowderTank();
     }
 
-    public void changeVehicleDirection(int change) {
+    public void changeVehicleDirection(int change, SteeringDirection direction) {
         chassis.changeRotation(change);
+        if (direction == SteeringDirection.CENTER) {
+            for (DirectionIndicator indicator : turnLeft) indicator.turnOff();
+            for (DirectionIndicator directionIndicator : turnRight) directionIndicator.turnOff();
+        } else if (direction == SteeringDirection.LEFT) {
+            for (DirectionIndicator indicator : turnLeft) indicator.turnOn();
+            for (DirectionIndicator directionIndicator : turnRight) directionIndicator.turnOff();
+        } else if (direction == SteeringDirection.RIGHT) {
+            for (DirectionIndicator indicator : turnLeft) indicator.turnOff();
+            for (DirectionIndicator directionIndicator : turnRight) directionIndicator.turnOn();
+        }
     }
 
 
@@ -134,6 +183,36 @@ public class CentralUnit implements ICentralUnit {
 
     public Mixer getMixer() {
         return mixer;
+    }
+
+    public void updateLights(Switch s) {
+        switch (s.type) {
+            case HEAD_LIGHT -> {
+                for (HeadLights light : headLights) {
+                    if (s.isPressed()) light.turnOn();
+                    else light.turnOff();
+                }
+            }
+            case WARNING_LIGHT -> {
+                for (WarningLight light : warningLights) {
+                    if (s.isPressed()) light.turnOn();
+                    else light.turnOff();
+                }
+            }
+            case ROOF_LIGHT -> {
+                for (RoofLight light : roofLights) {
+                    if (s.isPressed()) light.turnOn();
+                    else light.turnOff();
+                }
+            }
+            case SIDE_LIGHT -> {}
+            case EMERGENCY_LIGHT -> {
+                for (EmergencyLight light : emergencyLights) {
+                    if (s.isPressed()) light.turnOn();
+                    else light.turnOff();
+                }
+            }
+        }
     }
 
     public BatteryManagement getBatteryManagement() {

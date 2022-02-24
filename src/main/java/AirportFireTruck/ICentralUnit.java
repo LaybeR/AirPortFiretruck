@@ -8,12 +8,14 @@ import Cannon.RoofCannon;
 import Controller.BrakePedal;
 import Controller.GasPedal;
 import Controller.SteeringWheel;
+import Controller.Switch;
 import Driving.BatteryManagement;
+import Enums.SteeringDirection;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 
 public interface ICentralUnit {
-    public void changeVehicleDirection(int change);
+    public void changeVehicleDirection(int change, SteeringDirection direction);
 
     public void increaseSpeed();
 
@@ -31,4 +33,5 @@ public interface ICentralUnit {
     public Mixer getMixer();
     public BatteryManagement getBatteryManagement();
     public void postDisplay();
+    public void updateLights(Switch s);
 }

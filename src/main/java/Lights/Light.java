@@ -4,7 +4,7 @@ import Enums.*;
 
 public abstract class Light {
     LightColour colour;
-    Postion postion;
+    LateralPosition postion;
     FrontRearSide frontRearSide;
     LeftRightSide leftRightSide;
     boolean isOn;

@@ -19,7 +19,8 @@ public class AirportFireTruck {
 
     private AirportFireTruck(int count) {
         this.controlPanel = new ControlPanel();
-        this.centralUnit = new CentralUnit(controlPanel);
+        this.centralUnit = new CentralUnit(controlPanel, count);
+        controlPanel.setCentralUnit(centralUnit);
         this.cabin = new Cabin(centralUnit);
     }
 

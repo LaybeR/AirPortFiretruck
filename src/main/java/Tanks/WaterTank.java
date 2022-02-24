@@ -13,9 +13,13 @@ public class WaterTank extends Tank {
         Arrays.fill(capacity,capacity[0]);
     }
 
+    public int getMaxAmount() {
+        return (75*45*30);
+    }
+
     @Override
     public void fillIn(int amount) {
-        while (amount > 0 && pointer < (75*45*10)) {
+        while (amount > 0 && pointer < (75*45*30)) {
             capacity[74 - ((pointer / 30) % 75)][pointer / 2250][pointer % 30] = 1;
             pointer++;
             amount--;
