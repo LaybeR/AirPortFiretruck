@@ -17,12 +17,14 @@ public class Knob {
         if (maxLevel > level) {
             level++;
         }
+        System.out.println("Neues Level: " + level);
     }
 
     public void turnCounterClockwise() {
         if (level > 1) {
             level--;
         }
+        System.out.println("Neues Level: " + level);
     }
 
     public int getKnobPosition() {return level;}

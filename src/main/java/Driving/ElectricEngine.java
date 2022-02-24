@@ -7,7 +7,10 @@ public class ElectricEngine {
         return speed = speed + 5;
     }
     int decrease(){
-        return speed = speed - 5;
+        if (speed > 0) {
+            return speed = speed - 5;
+        }
+        return speed;
     }
 
     public int getSpeed() {

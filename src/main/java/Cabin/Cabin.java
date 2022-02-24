@@ -1,10 +1,13 @@
 package Cabin;
 
 import AirportFireTruck.ICentralUnit;
+import Enums.DoorStatus;
 import Enums.FrontBackPosition;
 import Enums.LeftRightPosition;
 import Enums.LeftRightSide;
 import User.IUser;
+import User.Passenger;
+import User.Person;
 
 public class Cabin {
     Seat[][] seats = new Seat[2][2];
@@ -14,8 +17,24 @@ public class Cabin {
     public final Door RD;
     private final ICentralUnit centralUnit;
 
-    void sitIn(IUser user, LeftRightSide side){
+    public IUser leaveSeat(IUser user) {
+        if (user instanceof Person) return user;
+        if (LD.status == DoorStatus.OPEN && ((Passenger) user).seatedIn().getSide() == LeftRightPosition.LEFT) return user.leaveSeat();
+        if (RD.status == DoorStatus.OPEN && ((Passenger) user).seatedIn().getSide() == LeftRightPosition.RIGHT) return user.leaveSeat();
+        return user;
+    }
 
+    public IUser sitIn(IUser user, LeftRightSide side, FrontBackPosition position){
+        if (user instanceof Person) {
+            if (side == LeftRightSide.LEFT && LD.status == DoorStatus.CLOSED) return user;
+            if (side == LeftRightSide.RIGHT && RD.status == DoorStatus.CLOSED) return user;
+            int x = position == FrontBackPosition.FRONT ? 0 : 1;
+            int y = side == LeftRightSide.LEFT ? 0 : 1;
+            if (!seats[x][y].isFilled()) {
+                return seats[x][y].sitIn(user);
+            }
+        }
+        return user;
     }
 
     public Cabin(ICentralUnit centralUnit){

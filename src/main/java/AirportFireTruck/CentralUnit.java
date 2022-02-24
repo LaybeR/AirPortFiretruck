@@ -12,6 +12,7 @@ import Controller.SteeringWheel;
 import Driving.BatteryManagement;
 import Driving.Chassis;
 import Enums.KnobType;
+import Enums.SwitchType;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 
@@ -48,7 +49,7 @@ public class CentralUnit implements ICentralUnit {
     }
 
     public void changeVehicleDirection(int change) {
-
+        chassis.changeRotation(change);
     }
 
 
@@ -74,10 +75,17 @@ public class CentralUnit implements ICentralUnit {
         if(roofCannon.isActivated())  mixer.getMix(waterTank,powderTank,1-roofCannon.getRatio(), roofCannonAmount);
         if(frontCannon.isActivated()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
         if(floorCannon.isActivated()) waterTank.takeOut(100);
+        display.setRemainingEnergy(batteryManagement.getCurrentCharge()/Double.parseDouble("" + batteryManagement.getMaxCharge()));
+    }
+
+    public void postDisplay() {
+        display.getSpeed();
+        display.getRemainingEnergy();
     }
 
     @Override
     public void increaseSpeed() {
+        if (!controlPanel.getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed()) return;
         chassis.increaseSpeed();
         display.setSpeed(chassis.getSpeed());
     }

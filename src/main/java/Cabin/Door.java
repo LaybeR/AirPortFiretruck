@@ -11,11 +11,12 @@ public class Door {
     public final DoorButton DBOUT;
 
     void changeDoorStatus(){
-    if (status == DoorStatus.IN) status = DoorStatus.OUT;
-    else status = DoorStatus.IN;
+    if (status == DoorStatus.CLOSED) status = DoorStatus.OPEN;
+    else status = DoorStatus.CLOSED;
     }
     Door(LeftRightPosition sde){
         this.side = sde;
+        status = DoorStatus.CLOSED;
         DBIN = new DoorButton(DoorSide.IN,this);
         DBOUT = new DoorButton(DoorSide.OUT,this);
     }

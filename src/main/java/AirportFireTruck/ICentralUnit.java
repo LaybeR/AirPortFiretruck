@@ -30,4 +30,5 @@ public interface ICentralUnit {
     public WaterTank getWaterTank();
     public Mixer getMixer();
     public BatteryManagement getBatteryManagement();
+    public void postDisplay();
 }

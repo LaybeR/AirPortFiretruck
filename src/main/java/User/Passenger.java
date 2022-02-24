@@ -1,6 +1,7 @@
 package User;
 
 import Cabin.Seat;
+import Enums.FrontBackPosition;
 
 public class Passenger implements IUser {
     Seat seat;
@@ -19,6 +20,7 @@ public class Passenger implements IUser {
 
     @Override
     public IUser leaveSeat() {
+        seat.freeSeat();
         return new Person();
     }
 }

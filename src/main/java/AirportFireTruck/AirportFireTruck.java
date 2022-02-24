@@ -141,6 +141,18 @@ public class AirportFireTruck {
         }
     }
 
+    public IUser sitIn(IUser user, LeftRightSide side, FrontBackPosition position) {
+        return cabin.sitIn(user,side,position);
+    }
+
+    public IUser leaveSeat(IUser user) {
+        return cabin.leaveSeat(user);
+    }
+
+    public void postDisplay() {
+        centralUnit.postDisplay();
+    }
+
     public void iterate() {
         centralUnit.iterate();
     }

@@ -9,7 +9,8 @@ public class SteerablePivot extends Pivot {
   }
 
   public void changeDirection(int change){
- direction = change;
+      direction = change;
+      System.out.println("Direction: " + direction);
   }
 
 }

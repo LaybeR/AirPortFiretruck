@@ -21,6 +21,8 @@ public enum BatteryManagement {
         return batteryBox.takeOut(amount);
     }
 
+    public int getMaxCharge() {return batteryBox.getMaxCharge();}
+
     public int getCurrentCharge(){
     return batteryBox.getCurrentCharge();
     }
