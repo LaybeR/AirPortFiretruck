@@ -13,6 +13,7 @@ public class ElectricEngine {
     public int getSpeed() {
         return speed;
     }
+
     void iterate(){
 
     }

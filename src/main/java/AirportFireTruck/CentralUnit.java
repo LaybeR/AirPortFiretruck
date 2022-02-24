@@ -5,6 +5,7 @@ import Controller.BrakePedal;
 import Controller.GasPedal;
 import Controller.SteeringWheel;
 import Driving.BatteryManagement;
+import Driving.Chassis;
 
 public class CentralUnit implements ICentralUnit {
     private final GasPedal gasPedal;
@@ -12,13 +13,16 @@ public class CentralUnit implements ICentralUnit {
     private final SteeringWheel steeringWheel;
     private final Display display;
     private final BatteryManagement batteryManagement;
+    private final Chassis chassis;
 
     public CentralUnit() {
         this.gasPedal = new GasPedal(this);
         this.brakePedal = new BrakePedal(this);
         this.steeringWheel = new SteeringWheel(this);
         this.display = new Display(this);
-        this.batteryManagement = new BatteryManagement(this);
+        this.batteryManagement = BatteryManagement.INSTANCE;
+        batteryManagement.setCU(this);
+        this.chassis = new Chassis();
     }
 
     public void changeVehicleDirection(int change) {
@@ -27,12 +31,14 @@ public class CentralUnit implements ICentralUnit {
 
     @Override
     public void increaseSpeed() {
-    display.setSpeed(display.getSpeed() + 5);
+        chassis.increaseSpeed();
+        display.setSpeed(chassis.getSpeed());
     }
 
     @Override
     public void decreaseSpeed() {
-        display.setSpeed(display.getSpeed() - 5);
+        chassis.decreaseSpeed();
+        display.setSpeed(chassis.getSpeed());
     }
 
     public Display getDisplay(){

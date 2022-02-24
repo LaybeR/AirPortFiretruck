@@ -4,11 +4,11 @@ import AirportFireTruck.ICentralUnit;
 
 public enum BatteryManagement {
     INSTANCE;
-    private final ICentralUnit CU;
+    private ICentralUnit CU;
 
     BatteryBox batteryBox;
 
-    BatteryManagement(ICentralUnit Cu){
+    public void setCU(ICentralUnit Cu){
         this.CU = Cu;
         create();
     }
