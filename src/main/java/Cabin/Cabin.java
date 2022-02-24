@@ -4,7 +4,7 @@ import AirportFireTruck.ICentralUnit;
 import Enums.FrontBackPosition;
 import Enums.LeftRightPosition;
 import Enums.LeftRightSide;
-import User.User;
+import User.IUser;
 
 public class Cabin {
     Seat[][] seats = new Seat[2][2];
@@ -14,7 +14,7 @@ public class Cabin {
     public final Door RD;
     private final ICentralUnit centralUnit;
 
-    void sitIn(User user, LeftRightSide side){
+    void sitIn(IUser user, LeftRightSide side){
 
     }
 
@@ -60,14 +60,14 @@ public class Cabin {
             }
             case RIGHT -> {
                 switch (buttonSide){
-                case LEFT -> {
-                    if(centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().deactivate();
-                    if(!centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().activate();
+                    case LEFT -> {
+                        if(centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().deactivate();
+                        if(!centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().activate();
+                    }
+                    case RIGHT -> {
+                        if(centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().changeRatio();
+                    }
                 }
-                case RIGHT -> {
-                    if(centralUnit.getRoofCannon().isActivated()) centralUnit.getRoofCannon().changeRatio();
-                }
-            }
             }
         }
     }

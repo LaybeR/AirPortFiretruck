@@ -4,10 +4,8 @@ import Cabin.Cabin;
 import Controller.Knob;
 import Controller.SteeringWheel;
 import Controller.Switch;
-import Enums.KnobDirectionType;
-import Enums.LeftRightPosition;
-import Enums.SteeringDirection;
-import User.User;
+import Enums.*;
+import User.IUser;
 import User.Driver;
 import User.Operator;
 import User.Person;
@@ -47,7 +45,15 @@ public class AirportFireTruck {
         return result;
     }
 
-    public void holdFeeler(User user, Joystick joystick) {
+    public Switch getSwitch(SwitchType type) {
+        return controlPanel.getSwitch(type);
+    }
+
+    public Knob getKnob(KnobType type) {
+        return controlPanel.getKnob(type);
+    }
+
+    public void holdFeeler(IUser user, Joystick joystick) {
         if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
             joystick.feeler.hold();
         } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
@@ -55,7 +61,7 @@ public class AirportFireTruck {
         }
     }
 
-    public void releaseFeeler(User user, Joystick joystick) {
+    public void releaseFeeler(IUser user, Joystick joystick) {
         if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
             joystick.feeler.release();
         } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
@@ -63,7 +69,7 @@ public class AirportFireTruck {
         }
     }
 
-    public void pressJoystickButton(User user, Joystick joystick, LeftRightPosition side) {
+    public void pressJoystickButton(IUser user, Joystick joystick, LeftRightPosition side) {
         if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
             switch (side) {
                 case LEFT -> joystick.LB.press();
@@ -77,35 +83,33 @@ public class AirportFireTruck {
         }
     }
 
-    public void pressDoorButtonLeft(User user) {
+    public void pressDoorButtonLeft(IUser user) {
         if (user instanceof Person) {
             cabin.LD.DBOUT.press();
-        } else if (user instanceof Passenger) {
-            Passenger temp = (Passenger) user;
+        } else if (user instanceof Passenger temp) {
             if (temp.seatedIn().getSide() == LeftRightPosition.LEFT) {
                 cabin.LD.DBIN.press();
             }
         }
     }
 
-    public void pressDoorButtonRight(User user) {
+    public void pressDoorButtonRight(IUser user) {
         if (user instanceof Person) {
             cabin.RD.DBOUT.press();
-        } else if (user instanceof Passenger) {
-            Passenger temp = (Passenger) user;
+        } else if (user instanceof Passenger temp) {
             if (temp.seatedIn().getSide() == LeftRightPosition.RIGHT) {
                 cabin.RD.DBIN.press();
             }
         }
     }
 
-    public void pressSwitch(Switch selectedSwitch, User user) {
+    public void pressSwitch(Switch selectedSwitch, IUser user) {
         if (user instanceof Operator) {
             selectedSwitch.press();
         }
     }
 
-    public void turnKnob(Knob selectedKnob, User user, KnobDirectionType direction) {
+    public void turnKnob(Knob selectedKnob, IUser user, KnobDirectionType direction) {
         if (user instanceof Operator) {
             switch (direction) {
                 case CLOCKWISE -> selectedKnob.turnClockwise();
@@ -114,19 +118,19 @@ public class AirportFireTruck {
         }
     }
 
-    public void pressGas(User user) {
+    public void pressGas(IUser user) {
         if (user instanceof Driver) {
             centralUnit.getGasPedal().press();
         }
     }
 
-    public void pressBrake(User user) {
+    public void pressBrake(IUser user) {
         if (user instanceof Driver) {
             centralUnit.getBrakePedal().press();
         }
     }
 
-    public void turnSteeringWheel(User user, SteeringDirection steeringDirection) {
+    public void turnSteeringWheel(IUser user, SteeringDirection steeringDirection) {
         if (user instanceof Driver) {
             SteeringWheel steeringWheel = centralUnit.getSteeringWheel();
             switch (steeringDirection) {

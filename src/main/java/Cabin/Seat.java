@@ -2,13 +2,13 @@ package Cabin;
 
 import Enums.FrontBackPosition;
 import Enums.LeftRightPosition;
-import User.User;
+import User.IUser;
 
 public class Seat {
     LeftRightPosition side;
     FrontBackPosition position;
 
-    User sitIn(User user){
+    IUser sitIn(IUser user){
     return user;
     }
     Seat(LeftRightPosition sde, FrontBackPosition pos){
@@ -19,4 +19,5 @@ public class Seat {
     public LeftRightPosition getSide() {
         return side;
     }
+    public FrontBackPosition getFrontOrBack() {return position;}
 }
