@@ -1,18 +1,24 @@
 package AirportFireTruck;
 
+import Cabin.Cabin;
 import Controller.Knob;
 import Controller.SteeringWheel;
 import Controller.Switch;
 import Enums.KnobDirectionType;
+import Enums.LeftRightPosition;
 import Enums.SteeringDirection;
 import User.User;
 import User.Driver;
 import User.Operator;
+import User.Person;
+import User.Passenger;
 
 public class AirportFireTruck {
     private final ICentralUnit centralUnit;
+    private final Cabin cabin;
 
     private AirportFireTruck(int count) {
+        this.cabin = new Cabin();
         this.centralUnit = new CentralUnit();
     }
 
@@ -26,6 +32,28 @@ public class AirportFireTruck {
 
         public AirportFireTruck build() {
             return new AirportFireTruck(headlights);
+        }
+    }
+
+    public void pressDoorButtonLeft(User user) {
+        if (user instanceof Person) {
+            cabin.LD.DBOUT.press();
+        } else if (user instanceof Passenger) {
+            Passenger temp = (Passenger) user;
+            if (temp.seatedIn().getSide() == LeftRightPosition.LEFT) {
+                cabin.LD.DBIN.press();
+            }
+        }
+    }
+
+    public void pressDoorButtonRight(User user) {
+        if (user instanceof Person) {
+            cabin.RD.DBOUT.press();
+        } else if (user instanceof Passenger) {
+            Passenger temp = (Passenger) user;
+            if (temp.seatedIn().getSide() == LeftRightPosition.RIGHT) {
+                cabin.RD.DBIN.press();
+            }
         }
     }
 

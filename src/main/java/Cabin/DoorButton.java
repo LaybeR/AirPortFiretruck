@@ -6,7 +6,7 @@ public class DoorButton {
     private final DoorSide doorSide;
     private final Door door;
 
-    void press(){
+    public void press(){
         door.changeDoorStatus();
     }
     DoorButton(DoorSide DS, Door door){

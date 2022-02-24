@@ -15,4 +15,8 @@ public class Seat {
         this.side = sde;
         this.position = pos;
     }
+
+    public LeftRightPosition getSide() {
+        return side;
+    }
 }

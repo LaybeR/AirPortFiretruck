@@ -1,27 +1,34 @@
 package Driving;
 
 public class Chassis {
-    NonSteerablePivot[] backPivot;
-    SteerablePivot[] frontPivot;
-    ElectricEngine[] engines;
+    private NonSteerablePivot[] backPivot;
+    private SteerablePivot[] frontPivot;
+    private ElectricEngine[] engines;
 
     public void increaseSpeed(){
-
+        for (ElectricEngine e : engines) {
+            e.increase();
+        }
     }
     public void decreaseSpeed(){
-
+        for (ElectricEngine e : engines) {
+            e.decrease();
+        }
     }
     public int getSpeed(){
-        return 0;
+        int speed = 0;
+        for (ElectricEngine e : engines) {
+            speed += e.getSpeed();
+        }
+        return speed/engines.length;
     }
-    public void changeRotation(){
+    public void changeRotation(int change){
+        for (SteerablePivot s : frontPivot) {
+            s.changeDirection(change);
+        }
+    }
 
-    }
-    Chassis(){
-    create();
-    }
-
-    void create(){
+    public Chassis(){
         backPivot[0] = new NonSteerablePivot();
         backPivot[1] = new NonSteerablePivot();
 
@@ -31,4 +38,5 @@ public class Chassis {
         engines[0] = new ElectricEngine();
         engines[1] = new ElectricEngine();
     }
+
 }
