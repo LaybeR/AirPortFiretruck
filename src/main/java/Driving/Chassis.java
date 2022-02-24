@@ -35,12 +35,15 @@ public class Chassis {
     }
 
     public Chassis(){
+        backPivot = new NonSteerablePivot[2];
         backPivot[0] = new NonSteerablePivot();
         backPivot[1] = new NonSteerablePivot();
 
+        frontPivot = new SteerablePivot[2];
         frontPivot[0] = new SteerablePivot();
         frontPivot[1] = new SteerablePivot();
 
+        engines = new ElectricEngine[2];
         engines[0] = new ElectricEngine();
         engines[1] = new ElectricEngine();
     }
