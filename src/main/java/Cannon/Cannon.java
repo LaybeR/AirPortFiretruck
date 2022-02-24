@@ -1,13 +1,17 @@
 package Cannon;
 
 public abstract class Cannon {
-    private boolean activated;
-    private int rotationInDeg;
-    private double neededRatio;
+    boolean activated;
+    int rotationInDeg;
+    int powderToWaterInPercent;
 
-    public void rotateLeft() {}
+    public void rotateLeft() {
+        if(rotationInDeg > -90) rotationInDeg -= 90;
+    }
 
-    public void rotateRight() {}
+    public void rotateRight() {
+        if(rotationInDeg < 90) rotationInDeg += 90;
+    }
 
     public void activate() {
         activated = true;
@@ -17,5 +21,15 @@ public abstract class Cannon {
         activated = false;
     }
 
-    public void changeRatio(int position) {}
+    public void changeRatio() {
+        switch (powderToWaterInPercent){
+        case 0-> powderToWaterInPercent = 3;
+        case 3-> powderToWaterInPercent = 5;
+        case 5-> powderToWaterInPercent = 10;
+        case 10-> powderToWaterInPercent = 0;
+        }
+    }
+    public double getRatio(){
+    return powderToWaterInPercent/100.;
+    }
 }
