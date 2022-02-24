@@ -94,4 +94,8 @@ public class AirportFireTruck {
             }
         }
     }
+
+    public void iterate() {
+        centralUnit.iterate();
+    }
 }

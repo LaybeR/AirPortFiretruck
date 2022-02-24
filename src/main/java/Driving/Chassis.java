@@ -28,6 +28,10 @@ public class Chassis {
         }
     }
 
+    public void iterate() {
+
+    }
+
     public Chassis(){
         backPivot[0] = new NonSteerablePivot();
         backPivot[1] = new NonSteerablePivot();

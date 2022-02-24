@@ -29,6 +29,10 @@ public class CentralUnit implements ICentralUnit {
 
     }
 
+    public void iterate() {
+        chassis.iterate();
+    }
+
     @Override
     public void increaseSpeed() {
         chassis.increaseSpeed();

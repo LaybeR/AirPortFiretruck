@@ -11,7 +11,7 @@ public interface ICentralUnit {
     public void increaseSpeed();
 
     public void decreaseSpeed();
-
+    public void iterate();
     public GasPedal getGasPedal();
     public BrakePedal getBrakePedal();
     public SteeringWheel getSteeringWheel();
