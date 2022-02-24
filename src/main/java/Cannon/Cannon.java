@@ -2,8 +2,10 @@ package Cannon;
 
 public abstract class Cannon {
     boolean activated;
+    boolean firing;
     int rotationInDeg;
     int powderToWaterInPercent;
+
 
     public void rotateLeft() {
         if(rotationInDeg > -90) rotationInDeg -= 90;
@@ -35,5 +37,13 @@ public abstract class Cannon {
 
     public boolean isActivated() {
         return activated;
+    }
+
+    public void setFiring(boolean firing) {
+        this.firing = firing;
+    }
+
+    public boolean isFiring() {
+        return firing;
     }
 }
