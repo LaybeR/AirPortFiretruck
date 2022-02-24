@@ -11,6 +11,7 @@ import Controller.Knob;
 import Controller.SteeringWheel;
 import Driving.BatteryManagement;
 import Driving.Chassis;
+import Enums.KnobType;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 
@@ -27,8 +28,10 @@ public class CentralUnit implements ICentralUnit {
     private final Mixer mixer;
     private final WaterTank waterTank;
     private final PowderTank powderTank;
+    private final ControlPanel controlPanel;
 
-    public CentralUnit() {
+    public CentralUnit(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
         this.gasPedal = new GasPedal(this);
         this.brakePedal = new BrakePedal(this);
         this.steeringWheel = new SteeringWheel(this);
@@ -48,10 +51,28 @@ public class CentralUnit implements ICentralUnit {
 
     }
 
+
+
     public void iterate() {
         chassis.iterate();
-        if(roofCannon.isActivated())  mixer.getMix(waterTank,powderTank,1-roofCannon.getRatio(), 99999999);
-        if(frontCannon.isActivated()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), 99999999);
+        int roofCannonAmount = 0;
+        switch (controlPanel.getKnob(KnobType.ROOF_CANNON).getKnobPosition()) {
+            case 1 -> roofCannonAmount = 500;
+            case 2 -> roofCannonAmount = 1500;
+            case 3 -> roofCannonAmount = 2500;
+        }
+        int frontCannonAmount = 0;
+        switch (controlPanel.getKnob(KnobType.FRONT_CANNON).getKnobPosition()) {
+            case 1 -> frontCannonAmount = 500;
+            case 2 -> frontCannonAmount = 1000;
+            case 3 -> frontCannonAmount = 1500;
+            case 4 -> frontCannonAmount = 2000;
+            case 5 -> frontCannonAmount = 2500;
+            case 6 -> frontCannonAmount = 3000;
+            case 7 -> frontCannonAmount = 3500;
+        }
+        if(roofCannon.isActivated())  mixer.getMix(waterTank,powderTank,1-roofCannon.getRatio(), roofCannonAmount);
+        if(frontCannon.isActivated()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
         if(floorCannon.isActivated()) waterTank.takeOut(100);
     }
 

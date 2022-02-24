@@ -16,10 +16,12 @@ import Cabin.Joystick;
 
 public class AirportFireTruck {
     private final ICentralUnit centralUnit;
+    private final ControlPanel controlPanel;
     private final Cabin cabin;
 
     private AirportFireTruck(int count) {
-        this.centralUnit = new CentralUnit();
+        this.controlPanel = new ControlPanel();
+        this.centralUnit = new CentralUnit(controlPanel);
         this.cabin = new Cabin(centralUnit);
     }
 

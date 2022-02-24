@@ -7,4 +7,9 @@ public abstract class Passenger extends User{
     public Seat seatedIn(){
         return seat;
     }
+
+    @Override
+    public User leaveSeat() {
+        return new Person();
+    }
 }

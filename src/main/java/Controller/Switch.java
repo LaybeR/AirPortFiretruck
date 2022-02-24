@@ -3,8 +3,12 @@ package Controller;
 import Enums.SwitchType;
 
 public class Switch {
-    private SwitchType type;
+    public final SwitchType type;
     private boolean isOn;
+
+    public Switch(SwitchType type) {
+        this.type = type;
+    }
 
     public void press() {
         isOn = !isOn;
