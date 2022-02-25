@@ -4,7 +4,7 @@ public class SteerablePivot extends Pivot {
   int direction;
 
   public SteerablePivot(){
-      create();
+      super();
       this.direction = 0;
   }
 

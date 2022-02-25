@@ -3,7 +3,7 @@ package AirportFireTruck;
 import Cabin.Display;
 import Cannon.FloorCannon;
 import Cannon.FrontCannon;
-import Cannon.Mixer;
+import Cannon.IMixer;
 import Cannon.RoofCannon;
 import Controller.BrakePedal;
 import Controller.GasPedal;
@@ -32,7 +32,7 @@ public interface ICentralUnit {
     public FrontCannon getFrontCannon();
     public PowderTank getPowderTank();
     public WaterTank getWaterTank();
-    public Mixer getMixer();
+    public IMixer getMixer();
     public BatteryManagement getBatteryManagement();
     public void postDisplay();
     public void updateLights(Switch s);

@@ -28,6 +28,4 @@ public class Knob {
     }
 
     public int getKnobPosition() {return level;}
-
-    public KnobType getKnobType() {return type;}
 }

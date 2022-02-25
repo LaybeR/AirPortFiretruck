@@ -11,9 +11,6 @@ public class ControlPanel {
     public final Knob knobFrontCannon;
     private ICentralUnit centralUnit;
 
-    public void setCentralUnit(ICentralUnit centralUnit) {
-        this.centralUnit = centralUnit;
-    }
 
     public ControlPanel() {
         this.switches = new Switch[7];
@@ -42,6 +39,10 @@ public class ControlPanel {
             if (s.type == type) return s;
         }
         return null;
+    }
+
+    public void setCentralUnit(ICentralUnit centralUnit) {
+        this.centralUnit = centralUnit;
     }
 
     public void update(Switch s) {

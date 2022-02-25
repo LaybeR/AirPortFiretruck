@@ -4,6 +4,7 @@ import Cabin.Display;
 import Cannon.FloorCannon;
 import Cannon.FrontCannon;
 import Cannon.Mixer;
+import Cannon.IMixer;
 import Cannon.RoofCannon;
 import Controller.*;
 import Driving.BatteryManagement;
@@ -147,32 +148,32 @@ public class CentralUnit implements ICentralUnit {
         display.setSpeed(chassis.getSpeed());
     }
 
-    public Display getDisplay() {
-        return display;
-    }
-
     public GasPedal getGasPedal() {
         return gasPedal;
+    }
+
+    public Display getDisplay() {
+        return display;
     }
 
     public BrakePedal getBrakePedal() {
         return brakePedal;
     }
 
-    public SteeringWheel getSteeringWheel() {
-        return steeringWheel;
+    public FrontCannon getFrontCannon() {
+        return frontCannon;
     }
 
     public RoofCannon getRoofCannon() {
         return roofCannon;
     }
 
-    public FloorCannon[] getFloorCannons() {
-        return floorCannons;
+    public SteeringWheel getSteeringWheel() {
+        return steeringWheel;
     }
 
-    public FrontCannon getFrontCannon() {
-        return frontCannon;
+    public FloorCannon[] getFloorCannons() {
+        return floorCannons;
     }
 
     public PowderTank getPowderTank() {
@@ -183,7 +184,7 @@ public class CentralUnit implements ICentralUnit {
         return waterTank;
     }
 
-    public Mixer getMixer() {
+    public IMixer getMixer() {
         return mixer;
     }
 

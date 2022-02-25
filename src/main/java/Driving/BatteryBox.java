@@ -42,17 +42,6 @@ public class BatteryBox {
         return batteryBox[0][0].pointer + batteryBox[1][0].pointer + batteryBox[0][1].pointer + batteryBox[1][1].pointer;
     }
 
-    public int getCurrentChargeFrom(int batteryNum) {
-        int result = 0;
-        switch (batteryNum) {
-            case 1 -> result = batteryBox[0][0].pointer;
-            case 2 -> result = batteryBox[1][0].pointer;
-            case 3 -> result = batteryBox[0][1].pointer;
-            case 4 -> result = batteryBox[1][1].pointer;
-        }
-        return result;
-    }
-
     int getMaxCharge() {
         return batteryBox[0][0].getMaxCharge() * 4;
     }

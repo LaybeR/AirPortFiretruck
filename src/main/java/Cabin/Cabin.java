@@ -101,8 +101,4 @@ public class Cabin {
     public DoorStatus getRightDoorStatus(){
         return RD.getStatus();
     }
-
-    public ICentralUnit getCentralUnit() {
-        return centralUnit;
-    }
 }

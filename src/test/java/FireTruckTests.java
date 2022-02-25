@@ -89,16 +89,16 @@ public class FireTruckTests {
         for(int i = 0; i <7;i++) {airportFireTruck.pressGas(driver); airportFireTruck.iterate();};
         assert(airportFireTruck.getCentralUnit().getChassis().getSpeed() == 28);
         for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.turnSteeringWheel(driver, SteeringDirection.LEFT);
+        airportFireTruck.turnWheel(driver, SteeringDirection.LEFT);
         assert(airportFireTruck.getCentralUnit().getChassis().getRotation() == -5);
         for(int i = 0; i <3;i++) airportFireTruck.iterate();
-        airportFireTruck.turnSteeringWheel(driver, SteeringDirection.CENTER);
+        airportFireTruck.turnWheel(driver, SteeringDirection.CENTER);
         assert(airportFireTruck.getCentralUnit().getChassis().getRotation() == 0);
         for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.turnSteeringWheel(driver, SteeringDirection.RIGHT);
+        airportFireTruck.turnWheel(driver, SteeringDirection.RIGHT);
         assert(airportFireTruck.getCentralUnit().getChassis().getRotation() == 5);
         for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.turnSteeringWheel(driver, SteeringDirection.CENTER);
+        airportFireTruck.turnWheel(driver, SteeringDirection.CENTER);
         for(int i = 0; i <7;i++) {airportFireTruck.iterate(); airportFireTruck.pressBrake(driver);}
         assert(airportFireTruck.getCentralUnit().getChassis().getSpeed() == 0);
         assert(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge() + 18200 == airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());

@@ -9,4 +9,8 @@ public abstract class Tank {
 
     public void fillIn(int amount) {}
 
+    public int getMaxAmount() {return 0;}
+
+    public int getFill() {return 0;}
+
 }
