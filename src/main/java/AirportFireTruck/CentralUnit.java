@@ -22,7 +22,7 @@ public class CentralUnit implements ICentralUnit {
     private final Chassis chassis;
     private final RoofCannon roofCannon;
     private final FrontCannon frontCannon;
-    private final FloorCannon floorCannon;
+    private final FloorCannon[] floorCannons;
     private final Mixer mixer;
     private final WaterTank waterTank;
     private final PowderTank powderTank;
@@ -81,7 +81,8 @@ public class CentralUnit implements ICentralUnit {
         this.chassis = new Chassis();
         this.roofCannon = new RoofCannon();
         this.frontCannon = new FrontCannon();
-        this.floorCannon = new FloorCannon();
+        this.floorCannons = new FloorCannon[7];
+        for (int i = 0; i < floorCannons.length; i++) floorCannons[i] = new FloorCannon();
         this.mixer = new Mixer();
         this.waterTank = new WaterTank();
         this.powderTank = new PowderTank();
@@ -121,9 +122,9 @@ public class CentralUnit implements ICentralUnit {
             case 6 -> frontCannonAmount = 3000;
             case 7 -> frontCannonAmount = 3500;
         }
-        if(roofCannon.isActivated())  mixer.getMix(waterTank,powderTank,1-roofCannon.getRatio(), roofCannonAmount);
-        if(frontCannon.isActivated()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
-        if(floorCannon.isActivated()) waterTank.takeOut(100);
+        if(roofCannon.isActivated() && roofCannon.isFiring())  mixer.getMix(waterTank,powderTank,1-roofCannon.getRatio(), roofCannonAmount);
+        if(frontCannon.isActivated() && frontCannon.isFiring()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
+        for (FloorCannon f : floorCannons) if (f.isActivated()) waterTank.takeOut(100);
         display.setRemainingEnergy(batteryManagement.getCurrentCharge()/Double.parseDouble("" + batteryManagement.getMaxCharge()));
     }
 
@@ -134,6 +135,7 @@ public class CentralUnit implements ICentralUnit {
 
     @Override
     public void increaseSpeed() {
+        System.out.println();
         if (!controlPanel.getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed()) return;
         chassis.increaseSpeed();
         display.setSpeed(chassis.getSpeed());
@@ -165,8 +167,8 @@ public class CentralUnit implements ICentralUnit {
         return roofCannon;
     }
 
-    public FloorCannon getFloorCannon() {
-        return floorCannon;
+    public FloorCannon[] getFloorCannons() {
+        return floorCannons;
     }
 
     public FrontCannon getFrontCannon() {
@@ -210,6 +212,12 @@ public class CentralUnit implements ICentralUnit {
                 for (EmergencyLight light : emergencyLights) {
                     if (s.isPressed()) light.turnOn();
                     else light.turnOff();
+                }
+            }
+            case FIRE_SELF_PROTECTION -> {
+                for (FloorCannon f : floorCannons) {
+                    if (s.isPressed()) f.activate();
+                    else f.deactivate();
                 }
             }
         }

@@ -28,7 +28,7 @@ public interface ICentralUnit {
     public SteeringWheel getSteeringWheel();
     public Display getDisplay();
     public RoofCannon getRoofCannon();
-    public FloorCannon getFloorCannon();
+    public FloorCannon[] getFloorCannons();
     public FrontCannon getFrontCannon();
     public PowderTank getPowderTank();
     public WaterTank getWaterTank();

@@ -14,12 +14,12 @@ public class PowderTank extends Tank {
     }
 
     public int getMaxAmount() {
-        return (75*45*10);
+        return 33750;
     }
 
     @Override
     public void fillIn(int amount) {
-        while (amount > 0 && pointer < (75*45*10)-1) {
+        while (amount > 0 && pointer < (75*45*10)) {
             capacity[74 - ((pointer / 10) % 75)][pointer / 750][pointer % 10] = 1;
             pointer++;
             amount--;
@@ -37,7 +37,7 @@ public class PowderTank extends Tank {
         }
         return result;
     }
-    public int[][][] getCapacity() {
-        return capacity;
+    public int getFill() {
+        return pointer;
     }
 }

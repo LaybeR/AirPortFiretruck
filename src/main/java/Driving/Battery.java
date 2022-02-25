@@ -31,7 +31,6 @@ public class Battery {
     }
 
     int takeOut(int amount){
-        System.out.println("Extracting: " + amount);
         int result = 0;
         while (amount > 0 && pointer > 0){
             --pointer;
@@ -42,11 +41,4 @@ public class Battery {
         return result;
     }
 
-    public int[][][] getCapacity() {
-        return capacity;
-    }
-
-    public int getPointer() {
-        return pointer;
-    }
 }

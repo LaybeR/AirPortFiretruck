@@ -3,15 +3,15 @@ package Driving;
 import java.util.Arrays;
 
 public class BatteryBox {
-    Battery[][] batteryBox = new Battery[2][2];
+    private final Battery[][] batteryBox;
     BatteryBox() {
-        create();
+        batteryBox = new Battery[2][2];
+        batteryBox[0][0] = new Battery();
+        batteryBox[1][0] = new Battery();
+        batteryBox[0][1] = new Battery();
+        batteryBox[1][1] = new Battery();
     }
-    void create(){
-       Arrays.fill(batteryBox[0], new Battery());
-       Arrays.fill(batteryBox, batteryBox[0]);
 
-    }
     public void charge(int amount){
         int left = batteryBox[0][0].charge(amount);
         if (left > 0){
@@ -42,11 +42,18 @@ public class BatteryBox {
         return batteryBox[0][0].pointer + batteryBox[1][0].pointer + batteryBox[0][1].pointer + batteryBox[1][1].pointer;
     }
 
-    int getMaxCharge() {
-        return batteryBox[0][0].getMaxCharge() * 4;
+    public int getCurrentChargeFrom(int batteryNum) {
+        int result = 0;
+        switch (batteryNum) {
+            case 1 -> result = batteryBox[0][0].pointer;
+            case 2 -> result = batteryBox[1][0].pointer;
+            case 3 -> result = batteryBox[0][1].pointer;
+            case 4 -> result = batteryBox[1][1].pointer;
+        }
+        return result;
     }
 
-    public Battery[][] getBatteryBox() {
-        return batteryBox;
+    int getMaxCharge() {
+        return batteryBox[0][0].getMaxCharge() * 4;
     }
 }

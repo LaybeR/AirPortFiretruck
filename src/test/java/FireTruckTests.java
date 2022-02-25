@@ -1,14 +1,14 @@
 
 import AirportFireTruck.AirportFireTruck;
+import Cabin.Joystick;
+import Controller.Knob;
+import Controller.Switch;
 import Enums.*;
-import User.Driver;
 import User.IUser;
-import User.Operator;
 import User.Person;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 public class FireTruckTests {
     AirportFireTruck airportFireTruck;
@@ -20,6 +20,7 @@ public class FireTruckTests {
     }
 
     @Test
+    @Order(1)
     void handleParking() {
         assert(!airportFireTruck.getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(!airportFireTruck.getSeats()[0][0].isFilled() && !airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
@@ -41,29 +42,34 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (!airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
-        assert(airportFireTruck.getCentralUnit().getBatteryManagement().getBatteryBox().getBatteryBox()[1][1].getCapacity()[99][9][99] == 1 );
-
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge() == airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
     }
 
     @Test
+    @Order(2)
     void handleInspectionDrive(){
-        Driver driver = new Driver(airportFireTruck.getSeats()[0][0]);
-        Operator operator = new Operator(airportFireTruck.getSeats()[0][1] );
-        Person person = new Person();
-        airportFireTruck.pressDoorButtonLeft(person);
-        airportFireTruck.getSeats()[0][0].sitIn(airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT));
-        airportFireTruck.pressDoorButtonRight(person);
-        airportFireTruck.getSeats()[0][1].sitIn(airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT));
-        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled());
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).press();
+        IUser driver = new Person();
+        IUser operator = new Person();
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        driver = airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT);
+        operator = airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT);
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
+        assert(airportFireTruck.getLeftDoorstatus() == DoorStatus.CLOSED && airportFireTruck.getRightDoorstatus() == DoorStatus.CLOSED);
+        //Operator and Driver now Sit in FLF Doors closed
+        Switch engine = airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE);
+        airportFireTruck.pressSwitch(engine,operator);
         assert(airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT).press();
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT));
+        Switch headlight = airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT);
+        Switch warninglight = airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT);
+        airportFireTruck.pressSwitch(headlight,operator);
+        airportFireTruck.pressSwitch(warninglight,operator);
         for(int j = 0 ; j < airportFireTruck.getCentralUnit().getHeadLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getHeadLights()[j].isOn);
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getRoofLights().length ; j++){
@@ -77,7 +83,8 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (!airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
         for(int i = 0; i <7;i++) {airportFireTruck.pressGas(driver); airportFireTruck.iterate();};
         assert(airportFireTruck.getCentralUnit().getChassis().getSpeed() == 28);
@@ -92,32 +99,36 @@ public class FireTruckTests {
         assert(airportFireTruck.getCentralUnit().getChassis().getRotation() == 5);
         for(int i = 0; i <5;i++) airportFireTruck.iterate();
         airportFireTruck.turnSteeringWheel(driver, SteeringDirection.CENTER);
-        for(int i = 0; i <7;i++) {airportFireTruck.pressBrake(driver); airportFireTruck.iterate();}
+        for(int i = 0; i <7;i++) {airportFireTruck.iterate(); airportFireTruck.pressBrake(driver);}
         assert(airportFireTruck.getCentralUnit().getChassis().getSpeed() == 0);
-        //erwarteter verbrauch:18200 12600
-        //assert(airportFireTruck.getCentralUnit().getBatteryManagement().getBatteryBox().getBatteryBox()[1][1].getPointer() == 100000-18200);
+        assert(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge() + 18200 == airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());
     }
+
     @Test
+    @Order(3)
     void handleEmergencyService (){
-        Driver driver = new Driver(airportFireTruck.getSeats()[0][0]);
-        Operator operator = new Operator(airportFireTruck.getSeats()[0][1] );
-        Person person = new Person();
-        airportFireTruck.pressDoorButtonLeft(person);
-        airportFireTruck.getSeats()[0][0].sitIn(airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT));
-        airportFireTruck.pressDoorButtonRight(person);
-        airportFireTruck.getSeats()[0][1].sitIn(airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT));
-        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled());
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).press();
+        IUser driver = new Person();
+        IUser operator = new Person();
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        driver = airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT);
+        operator = airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT);
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
+        assert(airportFireTruck.getLeftDoorstatus() == DoorStatus.CLOSED && airportFireTruck.getRightDoorstatus() == DoorStatus.CLOSED);
+        Switch temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE);
+        airportFireTruck.pressSwitch(temp,operator);
         assert(airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT).press();
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT));
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
         for(int j = 0 ; j < airportFireTruck.getCentralUnit().getHeadLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getHeadLights()[j].isOn);
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getRoofLights().length ; j++){
@@ -131,35 +142,38 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
         for(int i = 0; i <20;i++) {airportFireTruck.pressGas(driver); airportFireTruck.iterate();}
         for(int i = 0; i <10;i++) airportFireTruck.iterate();
-        ///assert ENERGY?!?!
+        assert(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge() + 41000 == airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());
     }
     @Test
+    @Order(4)
     void handleFuelTruckOnFire(){
-        Driver driver = new Driver(airportFireTruck.getSeats()[0][0]);
-        Operator operator = new Operator(airportFireTruck.getSeats()[0][1] );
-        Person person = new Person();
-        airportFireTruck.pressDoorButtonLeft(person);
-        airportFireTruck.getSeats()[0][0].sitIn(airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT));
-        airportFireTruck.pressDoorButtonRight(person);
-        airportFireTruck.getSeats()[0][1].sitIn(airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT));
-        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled());
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).press();
+        IUser driver = new Person();
+        IUser operator = new Person();
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        driver = airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT);
+        operator = airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT);
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
+        assert(airportFireTruck.getLeftDoorstatus() == DoorStatus.CLOSED && airportFireTruck.getRightDoorstatus() == DoorStatus.CLOSED);
+        Switch temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE);
+        airportFireTruck.pressSwitch(temp,operator);
         assert(airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT).press();
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT));
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
         for(int j = 0 ; j < airportFireTruck.getCentralUnit().getHeadLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getHeadLights()[j].isOn);
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getRoofLights().length ; j++){
@@ -169,48 +183,64 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
-        //schwenken!
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.FIRE_SELF_PROTECTION).press();
-        for(int i = 0; i <5;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).LB.press();
-        for(int i = 0; i <2;i++) airportFireTruck.getJoystick(LeftRightPosition.LEFT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.hold();
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.FIRE_SELF_PROTECTION);
+        airportFireTruck.pressSwitch(temp,operator);
+        airportFireTruck.iterate();
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 700 == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        airportFireTruck.pressSwitch(temp,operator);
+        Knob knob = airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON);
+        for(int i = 0; i <5;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        Joystick stick = airportFireTruck.getJoystick(LeftRightPosition.LEFT);
+        airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i <2;i++) airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(driver,stick);
         for(int i = 0; i <3;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <4;i++) airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).LB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.hold();
+        airportFireTruck.releaseFeeler(driver,stick);
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 9250 == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + 450 == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        knob = airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON);
+        for(int i = 0; i <2;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        stick = airportFireTruck.getJoystick(LeftRightPosition.RIGHT);
+        airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.LEFT);
+        airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(operator,stick);
         for(int i = 0; i <3;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.release();
-        //assert(Verbrauch??)
+        airportFireTruck.releaseFeeler(operator,stick);
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 16525 == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + 675 == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
     }
 
     @Test
+    @Order(5)
     void handlePushbackVehicleOnFire(){
-        Driver driver = new Driver(airportFireTruck.getSeats()[0][0]);
-        Operator operator = new Operator(airportFireTruck.getSeats()[0][1] );
-        Person person = new Person();
-        airportFireTruck.pressDoorButtonLeft(person);
-        airportFireTruck.getSeats()[0][0].sitIn(airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT));
-        airportFireTruck.pressDoorButtonRight(person);
-        airportFireTruck.getSeats()[0][1].sitIn(airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT));
-        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled());
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).press();
+        IUser driver = new Person();
+        IUser operator = new Person();
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        driver = airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT);
+        operator = airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT);
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
+        assert(airportFireTruck.getLeftDoorstatus() == DoorStatus.CLOSED && airportFireTruck.getRightDoorstatus() == DoorStatus.CLOSED);
+        Switch temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE);
+        airportFireTruck.pressSwitch(temp,operator);
         assert(airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT).press();
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT));
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
         for(int j = 0 ; j < airportFireTruck.getCentralUnit().getHeadLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getHeadLights()[j].isOn);
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getRoofLights().length ; j++){
@@ -220,54 +250,74 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
-        //Schwenken!
-        for(int i = 0; i <6;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).LB.press();
-        for(int i = 0; i <3;i++) airportFireTruck.getJoystick(LeftRightPosition.LEFT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.hold();
-        for(int i = 0; i <3;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <4;i++) airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).LB.press();
-        for(int i = 0; i <2;i++) airportFireTruck.getJoystick(LeftRightPosition.RIGHT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.hold();
-        for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <5;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnCounterClockwise();
-        for(int i = 0; i <2;i++) airportFireTruck.getJoystick(LeftRightPosition.LEFT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.hold();
-        for(int i = 0; i <3;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.release();
-        //assert(Verbrauch??)
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        Knob knob = airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON);
+        for(int i = 0; i < 6;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        Joystick stick = airportFireTruck.getJoystick(LeftRightPosition.LEFT);
+        airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i < 3;i++) airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(driver,stick);
+        for(int i = 0; i < 3;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(driver,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 9450 == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + 1050 == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        knob = airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON);
+        for(int i = 0; i < 2;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        stick = airportFireTruck.getJoystick(LeftRightPosition.RIGHT);
+        airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i < 2;i++) airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(operator,stick);
+        for(int i = 0; i < 5;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(operator,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 9450 + (2375*5) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + 1050 + (125*5) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        knob = airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON);
+        for(int i = 0; i < 5;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.COUNTER_CLOCKWISE);
+        stick = airportFireTruck.getJoystick(LeftRightPosition.LEFT);
+        airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i < 2;i++) airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(driver,stick);
+        for(int i = 0; i < 3;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(driver,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + 9450 + (2375*5) + (970*3) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + 1050 + (125*5) + (30*3) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
 
     }
 
     @Test
+    @Order(6)
     void handleAirplaneEngineFire(){
-        Driver driver = new Driver(airportFireTruck.getSeats()[0][0]);
-        Operator operator = new Operator(airportFireTruck.getSeats()[0][1] );
-        Person person = new Person();
-        airportFireTruck.pressDoorButtonLeft(person);
-        airportFireTruck.getSeats()[0][0].sitIn(airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT));
-        airportFireTruck.pressDoorButtonRight(person);
-        airportFireTruck.getSeats()[0][1].sitIn(airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT));
-        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled());
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).press();
+        IUser driver = new Person();
+        IUser operator = new Person();
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        driver = airportFireTruck.sitIn(driver, LeftRightSide.LEFT, FrontBackPosition.FRONT);
+        operator = airportFireTruck.sitIn(operator, LeftRightSide.RIGHT, FrontBackPosition.FRONT);
+        airportFireTruck.pressDoorButtonLeft(driver);
+        airportFireTruck.pressDoorButtonRight(operator);
+        assert(airportFireTruck.getSeats()[0][0].isFilled() && airportFireTruck.getSeats()[0][1].isFilled() && !airportFireTruck.getSeats()[1][0].isFilled() && !airportFireTruck.getSeats()[1][1].isFilled());
+        assert(airportFireTruck.getLeftDoorstatus() == DoorStatus.CLOSED && airportFireTruck.getRightDoorstatus() == DoorStatus.CLOSED);
+        Switch temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE);
+        airportFireTruck.pressSwitch(temp,operator);
         assert(airportFireTruck.getControlPanel().getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed());
         assert(airportFireTruck.getControlPanel().knobFrontCannon.getKnobPosition() == 1 && airportFireTruck.getControlPanel().knobRoofCannon.getKnobPosition() == 1 );
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT).press();
-        airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT).press();
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT));
-        airportFireTruck.getControlPanel().update(airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT));
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.HEAD_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.WARNING_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.ROOF_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.EMERGENCY_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
+        temp = airportFireTruck.getControlPanel().getSwitch(SwitchType.SIDE_LIGHT);
+        airportFireTruck.pressSwitch(temp,operator);
         for(int j = 0 ; j < airportFireTruck.getCentralUnit().getHeadLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getHeadLights()[j].isOn);
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getRoofLights().length ; j++){
@@ -277,33 +327,50 @@ public class FireTruckTests {
         }for(int j = 0 ; j < airportFireTruck.getCentralUnit().getEmergencyLights().length ; j++){
             assert (airportFireTruck.getCentralUnit().getEmergencyLights()[j].isOn);
         }
-        assert(airportFireTruck.getCentralUnit().getWaterTank().getCapacity()[74][44][29] == 1 && airportFireTruck.getCentralUnit().getPowderTank().getCapacity()[74][44][9] == 1 );
-        //Schwenken!
-        for(int i = 0; i <6;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).LB.press();
-        for(int i = 0; i <3;i++) airportFireTruck.getJoystick(LeftRightPosition.LEFT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.hold();
-        for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <4;i++) airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON).turnClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).LB.press();
-        for(int i = 0; i <3;i++) airportFireTruck.getJoystick(LeftRightPosition.RIGHT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.hold();
-        for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.RIGHT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <2;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnCounterClockwise();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.hold();
-        for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.release();
-        //assert(Verbrauch??)
-        for(int i = 0; i <3;i++) airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).turnCounterClockwise();
-        for(int i = 0; i <2;i++) airportFireTruck.getJoystick(LeftRightPosition.LEFT).RB.press();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.hold();
-        for(int i = 0; i <5;i++) airportFireTruck.iterate();
-        airportFireTruck.getJoystick(LeftRightPosition.LEFT).feeler.release();
-        //assert(Verbrauch??)
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        Knob knob = airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON);
+        for(int i = 0; i < 6;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        Joystick stick = airportFireTruck.getJoystick(LeftRightPosition.LEFT);
+        airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i < 3;i++) airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(driver,stick);
+        for(int i = 0; i < 5;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(driver,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + (3150*5) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + (350*5) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        knob = airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON);
+        for(int i = 0; i < 2;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.CLOCKWISE);
+        stick = airportFireTruck.getJoystick(LeftRightPosition.RIGHT);
+        airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.LEFT);
+        for(int i = 0; i < 3;i++) airportFireTruck.pressJoystickButton(operator,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(operator,stick);
+        for(int i = 0; i < 5;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(operator,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + (3150*5) + (2250*5) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + (350*5) + (250*5) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        airportFireTruck.holdFeeler(operator,stick);
+        for(int i = 0; i < 5;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(operator,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + (3150*5) + (2250*10) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + (350*5) + (250*10) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
+
+        knob = airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON);
+        for(int i = 0; i < 5;i++) airportFireTruck.turnKnob(knob,operator,KnobDirectionType.COUNTER_CLOCKWISE);
+        stick = airportFireTruck.getJoystick(LeftRightPosition.LEFT);
+        for(int i = 0; i < 2;i++) airportFireTruck.pressJoystickButton(driver,stick, LeftRightPosition.RIGHT);
+        airportFireTruck.holdFeeler(driver,stick);
+        for(int i = 0; i < 5;i++) airportFireTruck.iterate();
+        airportFireTruck.releaseFeeler(driver,stick);
+
+        assert(airportFireTruck.getCentralUnit().getWaterTank().getFill() + (3150*5) + (2250*10) + (970*5) == airportFireTruck.getCentralUnit().getWaterTank().getMaxAmount());
+        assert(airportFireTruck.getCentralUnit().getPowderTank().getFill() + (350*5) + (250*10) + (30*5) == airportFireTruck.getCentralUnit().getPowderTank().getMaxAmount());
     }
 
 

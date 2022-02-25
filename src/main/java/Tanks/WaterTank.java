@@ -6,7 +6,7 @@ public class WaterTank extends Tank {
     private int[][][] capacity;
 
     public WaterTank() {
-        pointer = (75*45*10)-1;
+        pointer = (75*45*30);
         capacity = new int[75][45][30];
         Arrays.fill(capacity[0][0],1);
         Arrays.fill(capacity[0],capacity[0][0]);
@@ -14,7 +14,7 @@ public class WaterTank extends Tank {
     }
 
     public int getMaxAmount() {
-        return (75*45*30);
+        return 101250;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class WaterTank extends Tank {
         return result;
     }
 
-    public int[][][] getCapacity() {
-        return capacity;
+    public int getFill() {
+        return pointer;
     }
 }
