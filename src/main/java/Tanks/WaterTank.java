@@ -37,4 +37,8 @@ public class WaterTank extends Tank {
         }
         return result;
     }
+
+    public int[][][] getCapacity() {
+        return capacity;
+    }
 }

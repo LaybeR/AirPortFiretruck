@@ -7,7 +7,7 @@ public abstract class Light {
     LateralPosition postion;
     FrontRearSide frontRearSide;
     LeftRightSide leftRightSide;
-    boolean isOn;
+    public boolean isOn;
 
     public void turnOn() {
         isOn = true;

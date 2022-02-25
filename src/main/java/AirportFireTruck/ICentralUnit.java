@@ -10,7 +10,9 @@ import Controller.GasPedal;
 import Controller.SteeringWheel;
 import Controller.Switch;
 import Driving.BatteryManagement;
+import Driving.Chassis;
 import Enums.SteeringDirection;
+import Lights.*;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 
@@ -34,4 +36,12 @@ public interface ICentralUnit {
     public BatteryManagement getBatteryManagement();
     public void postDisplay();
     public void updateLights(Switch s);
+    public BrakeLight[] getBrakeLights();
+    public EmergencyLight[] getEmergencyLights();
+    public DirectionIndicator[] getTurnRight();
+    public HeadLights[] getHeadLights();
+    public RoofLight[] getRoofLights();
+    public WarningLight[] getWarningLights();
+    public DirectionIndicator[] getTurnLeft();
+    public Chassis getChassis();
 }

@@ -48,4 +48,7 @@ public class Chassis {
         engines[1] = new ElectricEngine();
     }
 
+    public int getRotation() {
+        return frontPivot[1].getDirection();
+    }
 }

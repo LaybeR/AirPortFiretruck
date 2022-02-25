@@ -26,4 +26,8 @@ public enum BatteryManagement {
     public int getCurrentCharge(){
     return batteryBox.getCurrentCharge();
     }
+
+    public BatteryBox getBatteryBox() {
+        return batteryBox;
+    }
 }

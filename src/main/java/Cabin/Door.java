@@ -21,4 +21,7 @@ public class Door {
         DBOUT = new DoorButton(DoorSide.OUT,this);
     }
 
+    public DoorStatus getStatus() {
+        return status;
+    }
 }

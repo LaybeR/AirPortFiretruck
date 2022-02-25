@@ -11,6 +11,7 @@ public class Switch {
     public Switch(SwitchType type, ControlPanel controlPanel) {
         this.type = type;
         this.controlPanel = controlPanel;
+        this.isOn = false;
     }
 
     public void press() {

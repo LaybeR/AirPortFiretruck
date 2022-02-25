@@ -8,4 +8,5 @@ public abstract class Tank {
     }
 
     public void fillIn(int amount) {}
+
 }

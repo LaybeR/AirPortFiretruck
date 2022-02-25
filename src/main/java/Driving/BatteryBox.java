@@ -12,7 +12,7 @@ public class BatteryBox {
        Arrays.fill(batteryBox, batteryBox[0]);
 
     }
-    void charge(int amount){
+    public void charge(int amount){
         int left = batteryBox[0][0].charge(amount);
         if (left > 0){
             left = batteryBox[1][0].charge(amount);
@@ -24,7 +24,7 @@ public class BatteryBox {
             left = batteryBox[1][1].charge(amount);
         }
     }
-    int takeOut(int amount){
+    public int takeOut(int amount){
         int result = batteryBox[0][0].takeOut(amount);
         if (result < amount){
             result += batteryBox[1][0].takeOut(amount-result);
@@ -46,4 +46,7 @@ public class BatteryBox {
         return batteryBox[0][0].getMaxCharge() * 4;
     }
 
+    public Battery[][] getBatteryBox() {
+        return batteryBox;
+    }
 }

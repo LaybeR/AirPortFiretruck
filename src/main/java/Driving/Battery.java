@@ -41,4 +41,12 @@ public class Battery {
         }
         return result;
     }
+
+    public int[][][] getCapacity() {
+        return capacity;
+    }
+
+    public int getPointer() {
+        return pointer;
+    }
 }

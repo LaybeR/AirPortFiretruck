@@ -15,7 +15,7 @@ public class Seat {
         person = null;
     }
 
-    IUser sitIn(IUser user){
+    public IUser sitIn(IUser user){
         user = user.sitDown(this);
         person = user;
         return person;
@@ -25,7 +25,7 @@ public class Seat {
         person = null;
     }
 
-    boolean isFilled() {
+    public boolean isFilled() {
         return person != null;
     }
 

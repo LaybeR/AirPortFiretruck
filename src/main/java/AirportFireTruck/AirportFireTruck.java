@@ -11,13 +11,14 @@ import User.Operator;
 import User.Person;
 import User.Passenger;
 import Cabin.Joystick;
+import Cabin.Seat;
 
 public class AirportFireTruck {
     private final ICentralUnit centralUnit;
     private final ControlPanel controlPanel;
     private final Cabin cabin;
 
-    private AirportFireTruck(int count) {
+    public AirportFireTruck(int count) {
         this.controlPanel = new ControlPanel();
         this.centralUnit = new CentralUnit(controlPanel, count);
         controlPanel.setCentralUnit(centralUnit);
@@ -157,4 +158,24 @@ public class AirportFireTruck {
     public void iterate() {
         centralUnit.iterate();
     }
+
+    public Seat[][] getSeats(){
+        return cabin.getSeats();
+
+    }
+    public DoorStatus getLeftDoorstatus(){
+        return cabin.getLeftDoorStatus();
+    }
+    public DoorStatus getRightDoorstatus(){
+        return cabin.getRightDoorStatus();
+    }
+
+    public ICentralUnit getCentralUnit() {
+        return centralUnit;
+    }
+
+    public ControlPanel getControlPanel() {
+        return controlPanel;
+    }
+
 }

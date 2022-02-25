@@ -13,4 +13,7 @@ public class SteerablePivot extends Pivot {
       System.out.println("Direction: " + direction);
   }
 
+    public int getDirection() {
+        return direction;
+    }
 }

@@ -218,4 +218,36 @@ public class CentralUnit implements ICentralUnit {
     public BatteryManagement getBatteryManagement() {
         return batteryManagement;
     }
+
+    public BrakeLight[] getBrakeLights() {
+        return brakeLights;
+    }
+
+    public EmergencyLight[] getEmergencyLights() {
+        return emergencyLights;
+    }
+
+    public DirectionIndicator[] getTurnRight() {
+        return turnRight;
+    }
+
+    public HeadLights[] getHeadLights() {
+        return headLights;
+    }
+
+    public RoofLight[] getRoofLights() {
+        return roofLights;
+    }
+
+    public WarningLight[] getWarningLights() {
+        return warningLights;
+    }
+
+    public DirectionIndicator[] getTurnLeft() {
+        return turnLeft;
+    }
+
+    public Chassis getChassis() {
+        return chassis;
+    }
 }

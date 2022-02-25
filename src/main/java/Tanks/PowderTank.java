@@ -37,4 +37,7 @@ public class PowderTank extends Tank {
         }
         return result;
     }
+    public int[][][] getCapacity() {
+        return capacity;
+    }
 }

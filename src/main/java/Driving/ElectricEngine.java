@@ -4,11 +4,11 @@ public class ElectricEngine {
     int speed;
 
     int increase(){
-        return speed = speed + 5;
+        return speed = speed + 4;
     }
     int decrease(){
         if (speed > 0) {
-            return speed = speed - 5;
+            return speed = speed - 4;
         }
         return speed;
     }
