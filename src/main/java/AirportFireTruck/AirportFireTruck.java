@@ -70,12 +70,6 @@ public class AirportFireTruck {
         centralUnit.iterate();
     }
 
-    public void pressSwitch(Switch selectedSwitch, IUser user) {
-        if (user instanceof Operator) {
-            selectedSwitch.press();
-        }
-    }
-
     public void turnKnob(Knob selectedKnob, IUser user, KnobDirectionType direction) {
         if (user instanceof Operator) {
             switch (direction) {
