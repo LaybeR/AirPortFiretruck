@@ -21,7 +21,7 @@ public class BatteryBox {
             left = batteryBox[0][1].charge(amount);
         }
         if (left > 0){
-            left = batteryBox[1][1].charge(amount);
+            batteryBox[1][1].charge(amount);
         }
     }
     public int takeOut(int amount){
@@ -39,7 +39,7 @@ public class BatteryBox {
     }
 
     int getCurrentCharge(){
-        return batteryBox[0][0].pointer + batteryBox[1][0].pointer + batteryBox[0][1].pointer + batteryBox[1][1].pointer;
+        return batteryBox[0][0].getCharge() + batteryBox[1][0].getCharge() + batteryBox[0][1].getCharge() + batteryBox[1][1].getCharge();
     }
 
     int getMaxCharge() {
