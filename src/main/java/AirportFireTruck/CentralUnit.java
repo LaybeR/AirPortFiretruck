@@ -13,6 +13,7 @@ import Enums.*;
 import Lights.*;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
+import User.IUser;
 
 public class CentralUnit implements ICentralUnit {
     private final GasPedal gasPedal;
@@ -35,6 +36,7 @@ public class CentralUnit implements ICentralUnit {
     private final RoofLight[] roofLights;
     private final WarningLight[] warningLights;
     private final EmergencyLight[] emergencyLights;
+    private boolean EngineIsOn = false;
 
     public CentralUnit(ControlPanel controlPanel, int count) {
         this.headLights = new HeadLights[count*2];
@@ -136,14 +138,14 @@ public class CentralUnit implements ICentralUnit {
 
     @Override
     public void increaseSpeed() {
-        System.out.println();
-        if (!controlPanel.getSwitch(SwitchType.ELECTRIC_ENGINE).isPressed()) return;
+        if (!EngineIsOn) return;
         chassis.increaseSpeed();
         display.setSpeed(chassis.getSpeed());
     }
 
     @Override
     public void decreaseSpeed() {
+        if (!EngineIsOn) return;
         chassis.decreaseSpeed();
         display.setSpeed(chassis.getSpeed());
     }
@@ -188,38 +190,70 @@ public class CentralUnit implements ICentralUnit {
         return mixer;
     }
 
-    public void updateLights(Switch s) {
-        switch (s.type) {
+    public void turnSwitchOn(SwitchType s, IUser user) {
+        switch (s) {
             case HEAD_LIGHT -> {
                 for (HeadLights light : headLights) {
-                    if (s.isPressed()) light.turnOn();
-                    else light.turnOff();
+                    light.turnOn();
                 }
             }
             case WARNING_LIGHT -> {
                 for (WarningLight light : warningLights) {
-                    if (s.isPressed()) light.turnOn();
-                    else light.turnOff();
+                    light.turnOn();
                 }
             }
             case ROOF_LIGHT -> {
                 for (RoofLight light : roofLights) {
-                    if (s.isPressed()) light.turnOn();
-                    else light.turnOff();
+                    light.turnOn();
                 }
             }
             case SIDE_LIGHT -> {}
             case EMERGENCY_LIGHT -> {
                 for (EmergencyLight light : emergencyLights) {
-                    if (s.isPressed()) light.turnOn();
-                    else light.turnOff();
+                    light.turnOn();
                 }
             }
             case FIRE_SELF_PROTECTION -> {
                 for (FloorCannon f : floorCannons) {
-                    if (s.isPressed()) f.activate();
-                    else f.deactivate();
+                    f.activate();
                 }
+            }
+            case ELECTRIC_ENGINE -> {
+                EngineIsOn = true;
+            }
+        }
+    }
+
+    public void turnSwitchOff(SwitchType s, IUser user) {
+        switch (s) {
+            case HEAD_LIGHT -> {
+                for (HeadLights light : headLights) {
+                    light.turnOff();
+                }
+            }
+            case WARNING_LIGHT -> {
+                for (WarningLight light : warningLights) {
+                    light.turnOff();
+                }
+            }
+            case ROOF_LIGHT -> {
+                for (RoofLight light : roofLights) {
+                    light.turnOff();
+                }
+            }
+            case SIDE_LIGHT -> {}
+            case EMERGENCY_LIGHT -> {
+                for (EmergencyLight light : emergencyLights) {
+                    light.turnOff();
+                }
+            }
+            case FIRE_SELF_PROTECTION -> {
+                for (FloorCannon f : floorCannons) {
+                    f.deactivate();
+                }
+            }
+            case ELECTRIC_ENGINE -> {
+                EngineIsOn = false;
             }
         }
     }

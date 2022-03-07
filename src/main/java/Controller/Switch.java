@@ -1,24 +1,63 @@
 package Controller;
 
-import AirportFireTruck.ControlPanel;
+import AirportFireTruck.ICentralUnit;
+import Controller.Commands.*;
 import Enums.SwitchType;
+import User.IUser;
 
 public class Switch {
     public final SwitchType type;
-    private final ControlPanel controlPanel;
-    private boolean isOn;
+    private ISwitchState state;
+    private ICommand off;
+    private ICommand on;
 
-    public Switch(SwitchType type, ControlPanel controlPanel) {
+    public Switch(SwitchType type, ICentralUnit c) {
         this.type = type;
-        this.controlPanel = controlPanel;
-        this.isOn = false;
+        this.state = new SwitchOff();
+        switch (type) {
+            case FIRE_SELF_PROTECTION -> {
+                off = new FireSelfProtectionOff(c);
+                on = new FireSelfProtectionOn(c);
+            }
+            case SIDE_LIGHT -> {
+                off = new SideLightOff(c);
+                on = new SideLightOn(c);
+            }
+            case ROOF_LIGHT -> {
+                off = new RoofLightOff(c);
+                on = new RoofLightOn(c);
+            }
+            case HEAD_LIGHT -> {
+                off = new HeadLightOff(c);
+                on = new HeadLightOn(c);
+            }
+            case WARNING_LIGHT -> {
+                off = new WarningLightOff(c);
+                on = new WarningLightOn(c);
+            }
+            case ELECTRIC_ENGINE -> {
+                off = new EngineOff(c);
+                on = new EngineOn(c);
+            }
+            case EMERGENCY_LIGHT -> {
+                off = new EmergencyLightOff(c);
+                on = new EmergencyLightOn(c);
+            }
+        }
     }
 
-    public void press() {
-        isOn = !isOn;
-        System.out.println("Schalter ist nun" + (isOn ? " an." : " aus."));
-        controlPanel.update(this);
+    public void press(IUser user) {
+        state.press(this, user);
     }
 
-    public boolean isPressed() {return isOn;}
+
+    ICommand getOff() {return off;}
+
+    ICommand getOn() {return on;}
+
+    void changeState(ISwitchState state) {
+        this.state = state;
+    }
+
+    public boolean isPressed() {return state instanceof SwitchOn;}
 }
