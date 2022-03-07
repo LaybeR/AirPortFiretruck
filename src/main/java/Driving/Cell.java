@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cell {
     private boolean ischarged;
 
-    public ArrayList<Cell> cells = new ArrayList<>();
+
 
     public Cell(){
         this.ischarged = false;
@@ -13,7 +13,7 @@ public class Cell {
 
     public boolean charge ()
     {
-        if(!ischarged) {
+        if(!this.ischarged) {
         this.ischarged = true;
         return true;
         }
@@ -27,7 +27,7 @@ public class Cell {
 
 
     public boolean discharge(){
-        if(ischarged) {
+        if(this.ischarged) {
             this.ischarged = false;
             return true;
         }
@@ -39,9 +39,6 @@ public class Cell {
         return 0;
     }
 
-    public void addCell(Cell cell){
-        this.cells.add(cell);
-    }
 
     public boolean getCharge() {
         return ischarged;

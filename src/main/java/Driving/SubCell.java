@@ -1,6 +1,9 @@
 package Driving;
 
+import java.util.ArrayList;
+
 public class SubCell extends Cell{
+    ArrayList<Cell> cells = new ArrayList<>();
 
     public SubCell(){
         for (int i = 0; i < 10 ; i++){
@@ -10,7 +13,7 @@ public class SubCell extends Cell{
 
     @Override
     public int charge(int amount) {
-        for(int i = 0; i < cells.size() && amount > 0;){
+        for(int i = 0; i < cells.size() && amount > 0;i++){
             boolean success = this.cells.get(i).charge();
             if(success) amount--;
 
@@ -20,8 +23,8 @@ public class SubCell extends Cell{
 
     @Override
     public int discharge(int amount) {
-        for(int i = 0; i < cells.size() && amount > 0;){
-            boolean success = this.cells.get(i).discharge();
+        for(int i = cells.size(); i > 0 && amount > 0;i--){
+            boolean success = this.cells.get(i-1).discharge();
             if(success) amount--;
 
         }

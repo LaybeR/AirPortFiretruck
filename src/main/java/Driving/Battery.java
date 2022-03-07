@@ -23,16 +23,15 @@ public class Battery {
     }
 
     int charge(int amount){
-            for(int i = 0; i < cells.size() && amount > 0;){
-                amount = this.cells.get(i).charge(amount);
+            for(int i = cells.size(); i > 0 && amount > 0;i--){
+                amount = this.cells.get(i-1).charge(amount);
             }
             return  amount;
     }
 
     public int takeOut(int amount) {
-        for(int i = 0; i < cells.size() && amount > 0;){
-            boolean success = this.cells.get(i).discharge();
-            if(success) amount--;
+        for(int i = 0; i < this.cells.size() && amount > 0;i++){
+            amount = this.cells.get(i).discharge(amount);
 
         }
         return  amount;

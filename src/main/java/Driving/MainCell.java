@@ -12,16 +12,15 @@ public class MainCell extends Cell{
     }
     @Override
     public int charge(int amount) {
-        for(int i = 0; i < cells.size() && amount > 0;){
+        for(int i = 0; i < cells.size() && amount > 0;i++){
             amount = this.cells.get(i).charge(amount);
         }
         return  amount;
     }
     @Override
     public int discharge(int amount) {
-        for(int i = 0; i < cells.size() && amount > 0;){
-            boolean success = this.cells.get(i).discharge();
-            if(success) amount--;
+        for(int i = cells.size(); i > 0 && amount > 0;i--){
+            amount = this.cells.get(i-1).discharge(amount);
 
         }
         return  amount;
