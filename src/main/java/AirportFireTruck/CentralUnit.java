@@ -36,7 +36,6 @@ public class CentralUnit implements ICentralUnit {
     private final RoofLight[] roofLights;
     private final WarningLight[] warningLights;
     private final EmergencyLight[] emergencyLights;
-    private boolean EngineIsOn = false;
 
     public CentralUnit(ControlPanel controlPanel, int count) {
         this.headLights = new HeadLights[count*2];
@@ -91,6 +90,11 @@ public class CentralUnit implements ICentralUnit {
         this.powderTank = new PowderTank();
     }
 
+    public void setListener(FillGaugeLED waterTankL, FillGaugeLED powderTankL) {
+        waterTank.addListener(waterTankL);
+        powderTank.addListener(powderTankL);
+    }
+
     public void changeVehicleDirection(int change, SteeringDirection direction) {
         chassis.changeRotation(change);
         if (direction == SteeringDirection.CENTER) {
@@ -138,14 +142,12 @@ public class CentralUnit implements ICentralUnit {
 
     @Override
     public void increaseSpeed() {
-        if (!EngineIsOn) return;
         chassis.increaseSpeed();
         display.setSpeed(chassis.getSpeed());
     }
 
     @Override
     public void decreaseSpeed() {
-        if (!EngineIsOn) return;
         chassis.decreaseSpeed();
         display.setSpeed(chassis.getSpeed());
     }
@@ -219,7 +221,7 @@ public class CentralUnit implements ICentralUnit {
                 }
             }
             case ELECTRIC_ENGINE -> {
-                EngineIsOn = true;
+                chassis.changeEngineStatus(true);
             }
         }
     }
@@ -253,7 +255,7 @@ public class CentralUnit implements ICentralUnit {
                 }
             }
             case ELECTRIC_ENGINE -> {
-                EngineIsOn = false;
+                chassis.changeEngineStatus(false);
             }
         }
     }

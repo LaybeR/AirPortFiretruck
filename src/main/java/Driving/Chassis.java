@@ -15,6 +15,13 @@ public class Chassis {
             e.decrease();
         }
     }
+
+    public void changeEngineStatus(boolean on) {
+        for (ElectricEngine e : engines) {
+            e.changeStatus(on);
+        }
+    }
+
     public int getSpeed(){
         int speed = 0;
         for (ElectricEngine e : engines) {
