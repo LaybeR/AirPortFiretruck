@@ -9,6 +9,7 @@ import Controller.BrakePedal;
 import Controller.GasPedal;
 import Controller.SteeringWheel;
 import Driving.BatteryManagement;
+import Driving.ChargingStation;
 import Driving.Chassis;
 import Enums.SteeringDirection;
 import Enums.SwitchType;
@@ -46,5 +47,6 @@ public interface ICentralUnit {
      WarningLight[] getWarningLights();
      DirectionIndicator[] getTurnLeft();
      Chassis getChassis();
+     ChargingStation getChargingStation();
     void setListener(FillGaugeLED waterTankL, FillGaugeLED powderTankL);
 }
