@@ -68,6 +68,7 @@ public class AirportFireTruck {
 
     public void iterate() {
         centralUnit.iterate();
+        centralUnit.getChargingStation().charge();
     }
 
     public void turnKnob(Knob selectedKnob, IUser user, KnobDirectionType direction) {

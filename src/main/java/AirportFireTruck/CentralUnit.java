@@ -135,7 +135,6 @@ public class CentralUnit implements ICentralUnit {
         if(frontCannon.isActivated() && frontCannon.isFiring()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
         for (FloorCannon f : floorCannons) if (f.isActivated()) waterTank.takeOut(100);
         display.setRemainingEnergy(batteryManagement.getCurrentCharge()/Double.parseDouble("" + batteryManagement.getMaxCharge()));
-        chargingStation.charge();
     }
 
     public void postDisplay() {
@@ -320,5 +319,9 @@ public class CentralUnit implements ICentralUnit {
 
     public void plugOutCharger(){
         chargingStation.plugOut();
+    }
+
+    public ChargingStation getChargingStation() {
+        return chargingStation;
     }
 }
