@@ -1,11 +1,7 @@
 package AirportFireTruck;
 
 import Cabin.Display;
-import Cannon.FloorCannon;
-import Cannon.FrontCannon;
-import Cannon.Mixer;
-import Cannon.IMixer;
-import Cannon.RoofCannon;
+import Cannon.*;
 import Controller.*;
 import Driving.BatteryManagement;
 import Driving.BatteryManagementAdapter;
@@ -228,6 +224,21 @@ public class CentralUnit implements ICentralUnit {
                 }
             }
             case ELECTRIC_ENGINE -> {
+                CannonVisitor visitor = new CannonVisitor();
+                if (!roofCannon.accept(visitor)) {
+                    System.out.println("Fehler in der Dachlöschanlage");
+                    return;
+                }
+                if (!frontCannon.accept(visitor)) {
+                    System.out.println("Fehler in der Frontlöschanlage");
+                    return;
+                }
+                for (FloorCannon f : floorCannons) {
+                    if (!f.accept(visitor)) {
+                        System.out.println("Fehler in der Bodenlöschanlage");
+                        return;
+                    }
+                }
                 chassis.changeEngineStatus(true);
             }
         }
