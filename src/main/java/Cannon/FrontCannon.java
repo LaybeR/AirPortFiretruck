@@ -14,4 +14,7 @@ public class FrontCannon extends Cannon {
         rotationInDeg = 0;
     }
 
+    public boolean accept(ICannonVisitor visitor) {
+        return visitor.visit(this);
+    }
 }
