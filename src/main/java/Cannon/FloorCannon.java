@@ -16,4 +16,8 @@ public class FloorCannon {
      public boolean isActivated(){
         return activated;
      }
+
+     public boolean accept(ICannonVisitor visitor) {
+        return visitor.visit(this);
+     }
 }

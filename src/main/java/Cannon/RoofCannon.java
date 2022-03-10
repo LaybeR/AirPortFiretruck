@@ -25,4 +25,7 @@ public class RoofCannon extends Cannon {
         stDeg = 0;
     }
 
+    public boolean accept(ICannonVisitor visitor) {
+        return visitor.visit(this);
+    }
 }

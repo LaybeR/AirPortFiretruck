@@ -119,43 +119,12 @@ public class AirportFireTruck {
         }
     }
 
-    public void holdFeeler(IUser user, Joystick joystick) {
-        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
-            joystick.feeler.hold();
-        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
-            joystick.feeler.hold();
-        }
-    }
-
-    public void releaseFeeler(IUser user, Joystick joystick) {
-        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
-            joystick.feeler.release();
-        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
-            joystick.feeler.release();
-        }
-    }
-
-    public void pressJoystickButton(IUser user, Joystick joystick, LeftRightPosition side) {
-        if (user instanceof Driver && joystick.getLeftRightPosition() == LeftRightPosition.LEFT) {
-            switch (side) {
-                case LEFT -> joystick.LB.press();
-                case RIGHT -> joystick.RB.press();
-            }
-        } else if (user instanceof Operator && joystick.getLeftRightPosition() == LeftRightPosition.RIGHT) {
-            switch (side) {
-                case LEFT -> joystick.LB.press();
-                case RIGHT -> joystick.RB.press();
-            }
-        }
-    }
-
     public void postDisplay() {
         centralUnit.postDisplay();
     }
 
     public Seat[][] getSeats(){
         return cabin.getSeats();
-
     }
 
     public DoorStatus getLeftDoorstatus(){
