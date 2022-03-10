@@ -7,6 +7,7 @@ public enum BatteryManagement {
     private ICentralUnit CU;
 
     BatteryBox batteryBox;
+    BatteryManagementAdapter batteryManagementAdapter;
 
     public void setCU(ICentralUnit Cu){
         this.CU = Cu;

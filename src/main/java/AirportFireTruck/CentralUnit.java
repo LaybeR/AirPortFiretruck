@@ -8,6 +8,8 @@ import Cannon.IMixer;
 import Cannon.RoofCannon;
 import Controller.*;
 import Driving.BatteryManagement;
+import Driving.BatteryManagementAdapter;
+import Driving.ChargingStation;
 import Driving.Chassis;
 import Enums.*;
 import Lights.*;
@@ -36,6 +38,8 @@ public class CentralUnit implements ICentralUnit {
     private final RoofLight[] roofLights;
     private final WarningLight[] warningLights;
     private final EmergencyLight[] emergencyLights;
+    private final BatteryManagementAdapter batteryManagementAdapter;
+    private final ChargingStation chargingStation;
 
     public CentralUnit(ControlPanel controlPanel, int count) {
         this.headLights = new HeadLights[count*2];
@@ -88,6 +92,8 @@ public class CentralUnit implements ICentralUnit {
         this.mixer = new Mixer();
         this.waterTank = new WaterTank();
         this.powderTank = new PowderTank();
+        this.batteryManagementAdapter = new BatteryManagementAdapter(batteryManagement);
+        this.chargingStation = new ChargingStation();
     }
 
     public void setListener(FillGaugeLED waterTankL, FillGaugeLED powderTankL) {
@@ -133,6 +139,7 @@ public class CentralUnit implements ICentralUnit {
         if(frontCannon.isActivated() && frontCannon.isFiring()) mixer.getMix(waterTank,powderTank,1-frontCannon.getRatio(), frontCannonAmount);
         for (FloorCannon f : floorCannons) if (f.isActivated()) waterTank.takeOut(100);
         display.setRemainingEnergy(batteryManagement.getCurrentCharge()/Double.parseDouble("" + batteryManagement.getMaxCharge()));
+        chargingStation.charge();
     }
 
     public void postDisplay() {
@@ -294,5 +301,13 @@ public class CentralUnit implements ICentralUnit {
 
     public Chassis getChassis() {
         return chassis;
+    }
+
+    public void plugInCharger(){
+        chargingStation.plugIn(batteryManagementAdapter);
+    }
+
+    public void plugOutCharger(){
+        chargingStation.plugOut();
     }
 }
