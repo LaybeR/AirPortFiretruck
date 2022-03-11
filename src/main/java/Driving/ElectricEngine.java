@@ -1,5 +1,9 @@
 package Driving;
 
+import Events.ElectricEngineEvent;
+import Events.EmergencyLightEvent;
+import org.greenrobot.eventbus.Subscribe;
+
 public class ElectricEngine {
     int speed;
     boolean on;
@@ -31,5 +35,10 @@ public class ElectricEngine {
 
     void iterate(){
         BatteryManagement.INSTANCE.takeOutEnergy((int) (speed*12.5));
+    }
+
+    @Subscribe
+    public void changeState(ElectricEngineEvent electricEngineEvent){
+        on = !on;
     }
 }

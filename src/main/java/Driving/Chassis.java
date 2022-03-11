@@ -58,4 +58,8 @@ public class Chassis {
     public int getRotation() {
         return frontPivot[1].getDirection();
     }
+
+    public ElectricEngine[] getEngines() {
+        return engines;
+    }
 }

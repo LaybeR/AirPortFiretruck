@@ -1,6 +1,7 @@
 package Lights;
 
 import Enums.*;
+import org.greenrobot.eventbus.Subscribe;
 
 public abstract class Light {
     LightColour colour;
@@ -9,6 +10,8 @@ public abstract class Light {
     LeftRightSide leftRightSide;
     public boolean isOn;
 
+
+    @Subscribe
     public void turnOn() {
         isOn = true;
     }

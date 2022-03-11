@@ -1,6 +1,7 @@
 package Controller;
 
 import User.IUser;
+import org.greenrobot.eventbus.EventBus;
 
 public class SwitchOn implements ISwitchState {
     @Override

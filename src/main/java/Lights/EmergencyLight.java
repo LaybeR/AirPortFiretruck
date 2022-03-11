@@ -1,12 +1,16 @@
 package Lights;
 
 import Enums.*;
+import Events.EmergencyLightEvent;
+import Events.HeadLightEvent;
+import org.greenrobot.eventbus.Subscribe;
 
 public class EmergencyLight extends FlashingLight {
     LightSize size;
     LED[] led;
 
     public EmergencyLight(LateralPosition pos, FrontRearSide frontRearSide, LeftRightSide leftRightSide, LightSize size) {
+        this.isOn = false;
         colour = LightColour.BLUE;
         postion = pos;
         this.leftRightSide = leftRightSide;
@@ -27,4 +31,10 @@ public class EmergencyLight extends FlashingLight {
             }
         }
     }
+
+    @Subscribe
+    public void changeState(EmergencyLightEvent emergencyLightEvent){
+        isOn = !isOn;
+    }
+
 }

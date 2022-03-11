@@ -3,15 +3,13 @@ package AirportFireTruck;
 import Cabin.Display;
 import Cannon.*;
 import Controller.*;
-import Driving.BatteryManagement;
-import Driving.BatteryManagementAdapter;
-import Driving.ChargingStation;
-import Driving.Chassis;
+import Driving.*;
 import Enums.*;
 import Lights.*;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
 import User.IUser;
+import org.greenrobot.eventbus.EventBus;
 
 public class CentralUnit implements ICentralUnit {
     private final GasPedal gasPedal;
@@ -37,7 +35,9 @@ public class CentralUnit implements ICentralUnit {
     private final BatteryManagementAdapter batteryManagementAdapter;
     private final ChargingStation chargingStation;
 
+
     public CentralUnit(ControlPanel controlPanel, int count) {
+
         this.headLights = new HeadLights[count*2];
         for (int i = 0; i < headLights.length; i += 2){
             headLights[i] = new HeadLights(LeftRightSide.LEFT);
@@ -49,6 +49,7 @@ public class CentralUnit implements ICentralUnit {
             roofLights[i] = new RoofLight(LeftRightSide.LEFT);
             roofLights[i+1] = new RoofLight(LeftRightSide.RIGHT);
         }
+
 
         turnLeft = new DirectionIndicator[2];
         turnLeft[0] = new DirectionIndicator(FrontRearSide.FRONT,LeftRightSide.LEFT);
@@ -73,6 +74,7 @@ public class CentralUnit implements ICentralUnit {
         emergencyLights[4] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.REAR,LeftRightSide.LEFT,LightSize.MEDIUM);
         emergencyLights[5] = new EmergencyLight(LateralPosition.BOTTOM,FrontRearSide.REAR,LeftRightSide.RIGHT,LightSize.MEDIUM);
 
+
         this.controlPanel = controlPanel;
         this.gasPedal = new GasPedal(this);
         this.brakePedal = new BrakePedal(this);
@@ -90,6 +92,14 @@ public class CentralUnit implements ICentralUnit {
         this.powderTank = new PowderTank();
         this.batteryManagementAdapter = new BatteryManagementAdapter(batteryManagement);
         this.chargingStation = new ChargingStation();
+        for (EmergencyLight emergencyLight : emergencyLights) EventBus.getDefault().register(emergencyLight);
+        for (ElectricEngine electricEngine : getChassis().getEngines()) EventBus.getDefault().register(electricEngine);
+        for (HeadLights headLight : headLights) EventBus.getDefault().register(headLight);
+        for (RoofLight roofLight : roofLights) EventBus.getDefault().register(roofLight);
+        for (FloorCannon floorCannon : floorCannons) EventBus.getDefault().register(floorCannon);
+        for (WarningLight warningLight : warningLights ) EventBus.getDefault().register(warningLight);
+
+
     }
 
     public void setListener(FillGaugeLED waterTankL, FillGaugeLED powderTankL) {

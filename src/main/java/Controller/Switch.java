@@ -4,6 +4,7 @@ import AirportFireTruck.ICentralUnit;
 import Controller.Commands.*;
 import Enums.SwitchType;
 import User.IUser;
+import org.greenrobot.eventbus.EventBus;
 
 public class Switch {
     public final SwitchType type;
@@ -14,6 +15,7 @@ public class Switch {
     public Switch(SwitchType type, ICentralUnit c) {
         this.type = type;
         this.state = new SwitchOff();
+
         switch (type) {
             case FIRE_SELF_PROTECTION -> {
                 off = new FireSelfProtectionOff(c);

@@ -5,6 +5,9 @@ import Controller.Switch;
 import Enums.KnobType;
 import Enums.SwitchType;
 import Lights.FillGaugeLED;
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Enumeration;
 
 public class ControlPanel {
     private final Switch[] switches;
@@ -15,6 +18,7 @@ public class ControlPanel {
 
 
     public ControlPanel() {
+
         this.switches = new Switch[7];
         this.knobFrontCannon = new Knob(KnobType.FRONT_CANNON,7);
         this.knobRoofCannon = new Knob(KnobType.ROOF_CANNON,3);
