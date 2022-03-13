@@ -5,6 +5,7 @@ import Cannon.*;
 import Controller.*;
 import Driving.*;
 import Enums.*;
+import Events.*;
 import Lights.*;
 import Tanks.PowderTank;
 import Tanks.WaterTank;
@@ -211,29 +212,27 @@ public class CentralUnit implements ICentralUnit {
         switch (s) {
             case HEAD_LIGHT -> {
                 for (HeadLights light : headLights) {
-                    light.turnOn();
+                    EventBus.getDefault().post(new HeadLightEventOn());
                 }
             }
             case WARNING_LIGHT -> {
                 for (WarningLight light : warningLights) {
-                    light.turnOn();
+                    EventBus.getDefault().post(new WarningLightEventOn());
                 }
             }
             case ROOF_LIGHT -> {
                 for (RoofLight light : roofLights) {
-                    light.turnOn();
+                    EventBus.getDefault().post(new RoofLightEventOn());
                 }
             }
             case SIDE_LIGHT -> {}
             case EMERGENCY_LIGHT -> {
                 for (EmergencyLight light : emergencyLights) {
-                    light.turnOn();
-                }
+                    EventBus.getDefault().post(new EmergencyLightEventOn());                }
             }
             case FIRE_SELF_PROTECTION -> {
                 for (FloorCannon f : floorCannons) {
-                    f.activate();
-                }
+                    EventBus.getDefault().post(new SelfProtectionEventOn());                }
             }
             case ELECTRIC_ENGINE -> {
                 CannonVisitor visitor = new CannonVisitor();
@@ -252,6 +251,7 @@ public class CentralUnit implements ICentralUnit {
                     }
                 }
                 chassis.changeEngineStatus(true);
+                EventBus.getDefault().post(new ElectricEngineEventOn());
             }
         }
     }
@@ -260,33 +260,30 @@ public class CentralUnit implements ICentralUnit {
         switch (s) {
             case HEAD_LIGHT -> {
                 for (HeadLights light : headLights) {
-                    light.turnOff();
+                    EventBus.getDefault().post(new HeadLightEventOff());
                 }
             }
             case WARNING_LIGHT -> {
                 for (WarningLight light : warningLights) {
-                    light.turnOff();
+                    EventBus.getDefault().post(new WarningLightEventOff());
                 }
             }
             case ROOF_LIGHT -> {
                 for (RoofLight light : roofLights) {
-                    light.turnOff();
+                    EventBus.getDefault().post(new RoofLightEventOff());
                 }
             }
             case SIDE_LIGHT -> {}
             case EMERGENCY_LIGHT -> {
                 for (EmergencyLight light : emergencyLights) {
-                    light.turnOff();
-                }
+                    EventBus.getDefault().post(new EmergencyLightEventOff());                }
             }
             case FIRE_SELF_PROTECTION -> {
                 for (FloorCannon f : floorCannons) {
-                    f.deactivate();
-                }
+                    EventBus.getDefault().post(new SelfProtectionEventOff());                }
             }
             case ELECTRIC_ENGINE -> {
-                chassis.changeEngineStatus(false);
-            }
+                EventBus.getDefault().post(new ElectricEngineEventOff());            }
         }
     }
 

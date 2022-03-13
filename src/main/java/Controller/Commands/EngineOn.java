@@ -12,6 +12,6 @@ public class EngineOn implements ICommand{
     }
 
     public void execute(IUser user) {
-        c.turnSwitchOn(SwitchType.FIRE_SELF_PROTECTION, user);
+        c.turnSwitchOn(SwitchType.ELECTRIC_ENGINE, user);
     }
 }

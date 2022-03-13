@@ -4,8 +4,8 @@ import Enums.FrontRearSide;
 import Enums.LeftRightSide;
 import Enums.LightColour;
 import Enums.LateralPosition;
-import Events.HeadLightEvent;
-import Events.WarningLightEvent;
+import Events.WarningLightEventOff;
+import Events.WarningLightEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class WarningLight extends FlashingLight {
@@ -18,7 +18,12 @@ public class WarningLight extends FlashingLight {
     }
 
     @Subscribe
-    public void changeState(WarningLightEvent warningLightEvent){
-        isOn = !isOn;
+    public void turnOn(WarningLightEventOn warningLightEventOn){
+        isOn = true;
     }
+    @Subscribe
+    public void turnOff(WarningLightEventOff warningLightEventOff){
+        isOn = false;
+    }
+
 }

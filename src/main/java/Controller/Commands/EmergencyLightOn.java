@@ -12,6 +12,6 @@ public class EmergencyLightOn implements ICommand {
     }
 
     public void execute(IUser user) {
-        c.turnSwitchOn(SwitchType.FIRE_SELF_PROTECTION, user);
+        c.turnSwitchOn(SwitchType.EMERGENCY_LIGHT, user);
     }
 }

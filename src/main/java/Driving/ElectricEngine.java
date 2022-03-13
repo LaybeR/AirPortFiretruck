@@ -1,7 +1,7 @@
 package Driving;
 
-import Events.ElectricEngineEvent;
-import Events.EmergencyLightEvent;
+import Events.ElectricEngineEventOff;
+import Events.ElectricEngineEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class ElectricEngine {
@@ -38,7 +38,11 @@ public class ElectricEngine {
     }
 
     @Subscribe
-    public void changeState(ElectricEngineEvent electricEngineEvent){
-        on = !on;
+    public void turnOn(ElectricEngineEventOn electricEngineEventOn){
+        on = true;
+    }
+    @Subscribe
+    public void turnOff(ElectricEngineEventOff electricEngineEventOff){
+        on = false;
     }
 }

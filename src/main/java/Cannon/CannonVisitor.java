@@ -1,5 +1,9 @@
 package Cannon;
 
+import Events.SelfProtectionEventOff;
+import Events.SelfProtectionEventOn;
+import org.greenrobot.eventbus.EventBus;
+
 public class CannonVisitor implements ICannonVisitor {
 
     @Override
@@ -34,11 +38,11 @@ public class CannonVisitor implements ICannonVisitor {
 
     @Override
     public boolean visit(FloorCannon cannon) {
-        cannon.activate();
+        EventBus.getDefault().post(new SelfProtectionEventOn());
         if (cannon.activated != cannon.isActivated() || !cannon.activated) {
             return false;
         }
-        cannon.deactivate();
+        EventBus.getDefault().post(new SelfProtectionEventOff());
         if (cannon.activated != cannon.isActivated() || cannon.activated) {
             return false;
         }

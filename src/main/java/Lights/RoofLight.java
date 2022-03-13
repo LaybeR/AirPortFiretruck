@@ -4,8 +4,10 @@ import Enums.FrontRearSide;
 import Enums.LeftRightSide;
 import Enums.LightColour;
 import Enums.LateralPosition;
-import Events.HeadLightEvent;
-import Events.RoofLightEvent;
+import Events.RoofLightEventOff;
+import Events.RoofLightEventOn;
+import Events.WarningLightEventOff;
+import Events.WarningLightEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class RoofLight  extends Light {
@@ -18,7 +20,11 @@ public class RoofLight  extends Light {
     }
 
     @Subscribe
-    public void changeState(RoofLightEvent roofLightEvent){
-        isOn = !isOn;
+    public void turnOn(RoofLightEventOn roofLightEventOn){
+        isOn = true;
+    }
+    @Subscribe
+    public void turnOff(RoofLightEventOff roofLightEventOff){
+        isOn = false;
     }
 }

@@ -4,8 +4,10 @@ import Enums.FrontRearSide;
 import Enums.LeftRightSide;
 import Enums.LightColour;
 import Enums.LateralPosition;
-import Events.HeadLightEvent;
-import Events.SideLightEvent;
+import Events.SideLightEventOff;
+import Events.SideLightEventOn;
+import Events.WarningLightEventOff;
+import Events.WarningLightEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class SideLight  extends Light {
@@ -18,7 +20,11 @@ public class SideLight  extends Light {
     }
 
     @Subscribe
-    public void changeState(SideLightEvent sideLightEvent){
-        isOn = !isOn;
+    public void turnOn(SideLightEventOn sideLightEventOn){
+        isOn = true;
+    }
+    @Subscribe
+    public void turnOff(SideLightEventOff sideLightEventOff){
+        isOn = false;
     }
 }

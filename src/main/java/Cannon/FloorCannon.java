@@ -1,6 +1,9 @@
 package Cannon;
 
-import Events.SelfProtectionEvent;
+import Events.SelfProtectionEventOff;
+import Events.SelfProtectionEventOn;
+import Events.WarningLightEventOff;
+import Events.WarningLightEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class FloorCannon {
@@ -8,18 +11,16 @@ public class FloorCannon {
 
 
 
-    public void activate(){
+    @Subscribe
+    public void activate(SelfProtectionEventOn selfProtectionEventOn){
         activated = true;
     }
-
-    public void deactivate(){
+    @Subscribe
+    public void deactivate(SelfProtectionEventOff selfProtectionEventOff){
         activated = false;
     }
 
-    @Subscribe
-    public void changeStatus(SelfProtectionEvent selfProtectionEvent){
-        activated = !activated;
-    }
+
 
     public FloorCannon(){
         activated = false;

@@ -1,8 +1,10 @@
 package Lights;
 
 import Enums.*;
-import Events.EmergencyLightEvent;
-import Events.HeadLightEvent;
+import Events.EmergencyLightEventOff;
+import Events.EmergencyLightEventOn;
+import Events.WarningLightEventOff;
+import Events.WarningLightEventOn;
 import org.greenrobot.eventbus.Subscribe;
 
 public class EmergencyLight extends FlashingLight {
@@ -33,8 +35,12 @@ public class EmergencyLight extends FlashingLight {
     }
 
     @Subscribe
-    public void changeState(EmergencyLightEvent emergencyLightEvent){
-        isOn = !isOn;
+    public void turnOn(EmergencyLightEventOn emergencyLightEventOn){
+        isOn = true;
+    }
+    @Subscribe
+    public void turnOff(EmergencyLightEventOff emergencyLightEventOff){
+        isOn = false;
     }
 
 }
