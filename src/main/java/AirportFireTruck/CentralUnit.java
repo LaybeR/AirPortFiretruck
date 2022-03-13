@@ -38,6 +38,7 @@ public class CentralUnit implements ICentralUnit {
 
     public CentralUnit(ControlPanel controlPanel, int count) {
 
+
         this.headLights = new HeadLights[count*2];
         for (int i = 0; i < headLights.length; i += 2){
             headLights[i] = new HeadLights(LeftRightSide.LEFT);
@@ -82,6 +83,7 @@ public class CentralUnit implements ICentralUnit {
         this.display = new Display(this);
         this.batteryManagement = BatteryManagement.INSTANCE;
         batteryManagement.setCU(this);
+        SideLight sideLight = new SideLight(FrontRearSide.FRONT,LeftRightSide.LEFT);
         this.chassis = new Chassis();
         this.roofCannon = new RoofCannon();
         this.frontCannon = new FrontCannon();
@@ -98,7 +100,7 @@ public class CentralUnit implements ICentralUnit {
         for (RoofLight roofLight : roofLights) EventBus.getDefault().register(roofLight);
         for (FloorCannon floorCannon : floorCannons) EventBus.getDefault().register(floorCannon);
         for (WarningLight warningLight : warningLights ) EventBus.getDefault().register(warningLight);
-        for (FloorCannon floorCannon : floorCannons ) EventBus.getDefault().register(floorCannon);
+        EventBus.getDefault().register(sideLight);
 
 
     }
