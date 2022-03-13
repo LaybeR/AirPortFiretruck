@@ -53,10 +53,9 @@ public class ControlPanel {
         centralUnit.setListener(waterTankLED,powderTankLED);
     }
 
-    public void getInfoOnFill() {
-        System.out.println("Wassertank:");
-        waterTankLED.printStatus();
-        System.out.println("Pulvertank:");
-        powderTankLED.printStatus();
+    public String getInfoOnFill() {
+        String print = "Wassertank:\n" + waterTankLED.printStatus() + "\nPulvertank:\n" + powderTankLED.printStatus();
+        System.out.println(print);
+        return print;
     }
 }

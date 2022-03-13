@@ -29,7 +29,7 @@ public class FillGaugeLED implements ITankListener {
         }
     }
 
-    public void printStatus() {
+    public String printStatus() {
         String print = "Die LED ist " + (on ? "an und leuchtet " : "aus.");
         if (on) {
             switch (colour) {
@@ -38,6 +38,6 @@ public class FillGaugeLED implements ITankListener {
                 case RED -> print += "rot.";
             }
         }
-        System.out.println("");
+        return print;
     }
 }
