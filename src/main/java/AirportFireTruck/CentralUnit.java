@@ -98,6 +98,7 @@ public class CentralUnit implements ICentralUnit {
         for (RoofLight roofLight : roofLights) EventBus.getDefault().register(roofLight);
         for (FloorCannon floorCannon : floorCannons) EventBus.getDefault().register(floorCannon);
         for (WarningLight warningLight : warningLights ) EventBus.getDefault().register(warningLight);
+        for (FloorCannon floorCannon : floorCannons ) EventBus.getDefault().register(floorCannon);
 
 
     }
