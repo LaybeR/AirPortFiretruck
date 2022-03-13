@@ -212,6 +212,8 @@ public class FireTruckTests {
         assert(airportFireTruck.getControlPanel().getKnob(KnobType.FRONT_CANNON).getKnobPosition() == 1 && airportFireTruck.getControlPanel().getKnob(KnobType.ROOF_CANNON).getKnobPosition() == 1 );
         for(int i = 0; i <20;i++) {airportFireTruck.pressGas(driver); airportFireTruck.iterate();}
         for(int i = 0; i <10;i++) airportFireTruck.iterate();
+        System.out.println(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge());
+        System.out.println(airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());
         assert(airportFireTruck.getCentralUnit().getBatteryManagement().getCurrentCharge() + 41000 == airportFireTruck.getCentralUnit().getBatteryManagement().getMaxCharge());
     }
 }

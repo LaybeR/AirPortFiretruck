@@ -19,11 +19,12 @@ public class MainCell extends Cell{
     }
     @Override
     public int discharge(int amount) {
+        int result = 0;
         for(int i = cells.size(); i > 0 && amount > 0;i--){
-            amount = this.cells.get(i-1).discharge(amount);
+            result += this.cells.get(i-1).discharge(amount-result);
 
         }
-        return  amount;
+        return  result;
     }
 
     public int getCharged() {
@@ -32,5 +33,9 @@ public class MainCell extends Cell{
             charge = charge + cell.getCharged();
         }
         return charge;
+    }
+
+    public ArrayList<SubCell> getCells() {
+        return cells;
     }
 }

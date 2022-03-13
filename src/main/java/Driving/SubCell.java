@@ -23,12 +23,13 @@ public class SubCell extends Cell{
 
     @Override
     public int discharge(int amount) {
-        for(int i = cells.size(); i > 0 && amount > 0;i--){
+        int result = 0;
+        for(int i = cells.size(); i > 0 && result < amount;i--){
             boolean success = this.cells.get(i-1).discharge();
-            if(success) amount--;
+            if(success) result++;
 
         }
-        return  amount;
+        return  result;
     }
 
 

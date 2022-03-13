@@ -8,7 +8,7 @@ public class Cell {
 
 
     public Cell(){
-        this.ischarged = false;
+        this.ischarged = true;
     }
 
     public boolean charge ()

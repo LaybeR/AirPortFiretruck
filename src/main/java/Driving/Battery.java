@@ -19,7 +19,7 @@ public class Battery {
     }
 
     int getMaxCharge() {
-        return 100000;
+        return cells.size() * cells.get(0).cells.size() * cells.get(0).getCells().get(0).cells.size();
     }
 
     int charge(int amount){
@@ -30,11 +30,13 @@ public class Battery {
     }
 
     public int takeOut(int amount) {
-        for(int i = 0; i < this.cells.size() && amount > 0;i++){
-            amount = this.cells.get(i).discharge(amount);
+        int result = 0;
+        for(int i = 0; i < this.cells.size() && amount > 0 ;i++){
+            result += this.cells.get(i).discharge(amount-result);
+
 
         }
-        return  amount;
+        return  result;
     }
 
     public void addCell(int amount){
