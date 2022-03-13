@@ -1,7 +1,7 @@
 package Cannon;
 
 public class RoofCannon extends Cannon {
-    private int length;
+    int length;
     int stDeg;
     public void extendArm() {
         length = 17;
@@ -9,6 +9,10 @@ public class RoofCannon extends Cannon {
 
     public void contractArm() {
     length = 6;
+    }
+
+    public RoofCannon() {
+        length = 6;
     }
 
     @Override

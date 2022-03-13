@@ -10,7 +10,7 @@ public class FrontCannon extends Cannon {
 
     @Override
     public void deactivate() {
-        super.activate();
+        super.deactivate();
         rotationInDeg = 0;
     }
 
