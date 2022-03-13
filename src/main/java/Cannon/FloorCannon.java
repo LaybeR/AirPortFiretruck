@@ -1,13 +1,21 @@
 package Cannon;
 
+import org.greenrobot.eventbus.Subscribe;
+
 public class FloorCannon {
     Boolean activated;
 
+
+    @Subscribe
     public void activate(){
         activated = true;
     }
     public void deactivate(){
         activated = false;
+    }
+    @Subscribe
+    public void changeStatus(){
+        activated = !activated;
     }
 
     public FloorCannon(){

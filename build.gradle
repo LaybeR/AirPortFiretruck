@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'signing'
 }
 
 group 'org.example'
@@ -10,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation("org.greenrobot:eventbus-java:3.3.1")
 
 }
@@ -19,3 +20,30 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+task build_jar(type: Jar) {
+    project.archivesBaseName = "AirPortFireTruck"
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    delete "jar"
+    mkdir "jar"
+
+    copy {
+        from 'build/libs/AirPortFireTruck.jar'
+        into "jar"
+    }
+
+}
+jar.doLast {
+    new File('build/sign').mkdirs();
+    ant.signjar(
+            destDir: 'build/sign',
+            jar: 'build/libs/AirportFireTruck.jar',
+            alias:"3302106",
+            storetype:"jks",
+            keystore:"keystore.jks",
+            storepass:"password",
+            preservelastmodified:"true")
+}
+
